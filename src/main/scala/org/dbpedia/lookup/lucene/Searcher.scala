@@ -53,13 +53,15 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
     private def getQuery(keyword: String, ontologyClass: String, prefixQuery: Boolean = false): Query = {
         val bq = new BooleanQuery
 
+        val decodedKeyword = WikiUtil.wikiDecode(keyword)
+
         if(prefixQuery) {
-            val searchTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(keyword)
-            val prefixQuery = new PrefixQuery(new Term(LuceneConfig.Fields.SURFACE_FORM_PREFIX, searchTerm))
+            val pseudoAnalyzedKeyword = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(decodedKeyword)
+            val prefixQuery = new PrefixQuery(new Term(LuceneConfig.Fields.SURFACE_FORM_PREFIX, pseudoAnalyzedKeyword))
             bq.add(prefixQuery, BooleanClause.Occur.MUST)
         }
         else {
-            val escapedKeyword = QueryParser.escape(WikiUtil.wikiDecode(keyword))
+            val escapedKeyword = QueryParser.escape(decodedKeyword)
             val phraseQuery = queryParser.parse('"' + escapedKeyword + '"')  //quotes keep word order
             bq.add(phraseQuery, BooleanClause.Occur.MUST)
         }
@@ -69,6 +71,7 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
             case _ =>
         }
 
+        println(bq)
         bq
     }
 

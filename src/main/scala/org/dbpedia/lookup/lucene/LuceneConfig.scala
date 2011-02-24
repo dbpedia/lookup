@@ -53,9 +53,8 @@ object LuceneConfig {
         private val prefixSearchQueryParser = new QueryParser(version, Fields.SURFACE_FORM_KEYWORD, analyzer)
 
         def analyze(keyword: String) = {
-            val escapedKeyword = QueryParser.escape(WikiUtil.wikiDecode(keyword))
-            prefixSearchQueryParser.parse('"' + escapedKeyword + '"')
-                    .toString.replace(Fields.SURFACE_FORM_KEYWORD, "")
+            prefixSearchQueryParser.parse('"' + QueryParser.escape(keyword) + '"')
+                    .toString.replace(Fields.SURFACE_FORM_KEYWORD+":", "")
                              .replaceFirst("^\"", "")
                              .replaceFirst("\"$", "")
                              .toLowerCase
