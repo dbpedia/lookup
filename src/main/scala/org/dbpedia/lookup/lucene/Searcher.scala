@@ -71,7 +71,6 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
             case _ =>
         }
 
-        println(bq)
         bq
     }
 
