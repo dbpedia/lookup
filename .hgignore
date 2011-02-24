@@ -1,0 +1,8 @@
+.idea
+
+syntax: glob
+*.iml
+*.ipr
+*.iws
+target/*
+
