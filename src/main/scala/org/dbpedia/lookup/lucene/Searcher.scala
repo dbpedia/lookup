@@ -21,7 +21,7 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
     private val indexReader = IndexReader.open(FSDirectory.open(indexDir), true)  // read-only
     private val indexSearcher = new IndexSearcher(indexReader)
     private val sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
-    private val queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM, LuceneConfig.analyzer)
+    private val queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, LuceneConfig.analyzer)
 
 
     def keywordSearch(keyword: String, ontologyClass: String="", maxResults: Int=5): List[Result] = {
@@ -51,18 +51,17 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
     }
 
     private def getQuery(keyword: String, ontologyClass: String, prefixQuery: Boolean = false): Query = {
-        val escapeLowerCased = QueryParser.escape(WikiUtil.wikiDecode(keyword)).toLowerCase
-        val searchQuery = queryParser.parse('"' + escapeLowerCased + '"')  //quotes keep phrase order
-
         val bq = new BooleanQuery
 
         if(prefixQuery) {
-            // HACK to analyze prefix queries
-            val analyzedTerm = searchQuery.toString.replace("SURFACE_FORM:", "").replaceFirst("^\"", "").replaceFirst("\"$", "")
-            bq.add(new PrefixQuery(new Term(LuceneConfig.Fields.SURFACE_FORM_PREFIX, analyzedTerm)), BooleanClause.Occur.MUST)
+            val searchTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(keyword)
+            val prefixQuery = new PrefixQuery(new Term(LuceneConfig.Fields.SURFACE_FORM_PREFIX, searchTerm))
+            bq.add(prefixQuery, BooleanClause.Occur.MUST)
         }
         else {
-            bq.add(searchQuery, BooleanClause.Occur.MUST)
+            val escapedKeyword = QueryParser.escape(WikiUtil.wikiDecode(keyword))
+            val phraseQuery = queryParser.parse('"' + escapedKeyword + '"')  //quotes keep word order
+            bq.add(phraseQuery, BooleanClause.Occur.MUST)
         }
 
         getOntologyClassQuery(ontologyClass) match {
@@ -70,7 +69,6 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
             case _ =>
         }
 
-        println(bq)
         bq
     }
 
@@ -79,19 +77,20 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
             None
         }
         else {
+            val ontologyPrefix = "http://dbpedia.org/ontology/"
             //is full class URI
-            if(ontologyClass startsWith "http://dbpedia.org/ontology/") {
+            if(ontologyClass startsWith ontologyPrefix) {
                 Some(new TermQuery(new Term(LuceneConfig.Fields.CLASS, ontologyClass.trim)))
             }
             //abbreviated namespace prefix
             else if(ontologyClass.startsWith("dbpedia:") || ontologyClass.startsWith("dbpedia-owl:")) {
                 val c = ontologyClass.trim.replace("dbpedia:", "").replace("dbpedia-owl:", "")
-                Some(new TermQuery(new Term(LuceneConfig.Fields.CLASS, "http://dbpedia.org/ontology/"+c)))
+                Some(new TermQuery(new Term(LuceneConfig.Fields.CLASS, ontologyPrefix+c)))
             }
             //label given: make camel case and attach namespace
             else {
                 val camel = ontologyClass.trim.split(" ").map(_.capitalize).mkString("")
-                Some(new TermQuery(new Term(LuceneConfig.Fields.CLASS, "http://dbpedia.org/ontology/"+camel)))
+                Some(new TermQuery(new Term(LuceneConfig.Fields.CLASS, ontologyPrefix+camel)))
             }
         }
     }

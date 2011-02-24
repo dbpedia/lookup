@@ -86,4 +86,3 @@ How to re-build the Lucene index:
       e.g. 'c:\data-to-be-indexed.nt '
 
    mvn scala:run -Dlauncher=Indexer "-DaddArgs=c:\lucene_lookup_index|c:\redirects_en.nt|c:\data-to-be-indexed.nt"
-

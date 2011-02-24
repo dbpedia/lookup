@@ -6,6 +6,8 @@ import io.Source
 import org.apache.lucene.analysis._
 import java.io.{Reader, File}
 import standard.{StandardFilter, StandardAnalyzer}
+import org.apache.lucene.queryParser.QueryParser
+import org.dbpedia.lookup.util.WikiUtil
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,27 +45,26 @@ object LuceneConfig {
     // Lucene Version
     val version = Version.LUCENE_30
 
+    // Analyzer for KeywordSearch
+    val analyzer = new StandardAnalyzer(version, StopAnalyzer.ENGLISH_STOP_WORDS_SET)
 
-    class DualAnalyzer extends Analyzer {
-        private val standardAnalyzer = new StandardAnalyzer(version, StopAnalyzer.ENGLISH_STOP_WORDS_SET)
-        private val keywordAnalyzer = new KeywordAnalyzer
+    //HACK!: Analyzer for PrefixSearch. The result is converted back to a string and indexed/search NOT_ANALYZED!
+    object PrefixSearchPseudoAnalyzer {
+        private val prefixSearchQueryParser = new QueryParser(version, Fields.SURFACE_FORM_KEYWORD, analyzer)
 
-        override def tokenStream(fieldName: String, reader: Reader): TokenStream = {
-            if(fieldName == Fields.SURFACE_FORM_PREFIX) {
-                new LowerCaseFilter( keywordAnalyzer.tokenStream(fieldName, reader) )
-            }
-            else {
-                standardAnalyzer.tokenStream(fieldName, reader)
-            }
+        def analyze(keyword: String) = {
+            val escapedKeyword = QueryParser.escape(WikiUtil.wikiDecode(keyword))
+            prefixSearchQueryParser.parse('"' + escapedKeyword + '"')
+                    .toString.replace(Fields.SURFACE_FORM_KEYWORD, "")
+                             .replaceFirst("^\"", "")
+                             .replaceFirst("\"$", "")
+                             .toLowerCase
         }
     }
 
-    //val analyzer = new DualAnalyzer
-    val analyzer = new StandardAnalyzer(version, StopAnalyzer.ENGLISH_STOP_WORDS_SET)
-
     object Fields {
         val URI = "URI"
-        val SURFACE_FORM = "SURFACE_FORM"
+        val SURFACE_FORM_KEYWORD = "SURFACE_FORM_KEYWORD"
         val SURFACE_FORM_PREFIX = "SURFACE_FORM_PREFIX"
         val REFCOUNT = "REFCOUNT"
 

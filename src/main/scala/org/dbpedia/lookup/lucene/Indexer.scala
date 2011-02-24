@@ -78,20 +78,15 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
         val doc = new Document()
         doc.add(new Field(LuceneConfig.Fields.URI, uriTerm.text, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
 
-        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://dbpedia.org/resource/", "")).toLowerCase  //toLowerCase
-        //doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM, label, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
-        //doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, label, Field.Store.NO, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
-        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM, label, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES))
-        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, label, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.YES))
+        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://dbpedia.org/resource/", ""))
+        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, label, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
+        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, label, Field.Store.NO, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
 
         for((field, valueSet) <- fields) {
             for(value <- valueSet) {
-                if(field == LuceneConfig.Fields.SURFACE_FORM) {
-                    //doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM, value.toLowerCase, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
-                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM, value.toLowerCase, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES))
-
-                    //doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, value.toLowerCase, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
-                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, value.toLowerCase, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.YES))
+                if(field == LuceneConfig.Fields.SURFACE_FORM_KEYWORD) {
+                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, value, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
+                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, value, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
                 }
                 else {
                     doc.add(new Field(field, value, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))

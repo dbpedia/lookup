@@ -17,8 +17,8 @@ class DBpedia2Lucene(val dataSet: InputStream, val redirects: Set[String]) exten
     private val it = new NxParser(dataSet)
 
     val predicate2field = Map(
-        "http://lexvo.org/ontology#label" -> LuceneConfig.Fields.SURFACE_FORM,   // no DBpedia dataset, has to be created
-        "http://lexvo.org/id/label" -> LuceneConfig.Fields.SURFACE_FORM,         // no DBpedia dataset, has to be created    //TODO delete
+        "http://lexvo.org/ontology#label" -> LuceneConfig.Fields.SURFACE_FORM_KEYWORD,   // no DBpedia dataset, has to be created
+        "http://lexvo.org/id/label" -> LuceneConfig.Fields.SURFACE_FORM_KEYWORD,         // no DBpedia dataset, has to be created    //TODO delete
         "http://dbpedia.org/property/refCount" -> LuceneConfig.Fields.REFCOUNT,  // no DBpedia dataset, has to be created
         "http://dbpedia.org/ontology/abstract" -> LuceneConfig.Fields.DESCRIPTION,
         "http://www.w3.org/2000/01/rdf-schema#comment" -> LuceneConfig.Fields.DESCRIPTION,
