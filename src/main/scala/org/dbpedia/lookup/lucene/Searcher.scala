@@ -78,6 +78,9 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
         if(ontologyClass == null || ontologyClass.trim == "") {
             None
         }
+        else if(ontologyClass.toLowerCase == "thing" || ontologyClass.toLowerCase.endsWith("#thing")) {
+            None
+        }
         else {
             val ontologyPrefix = "http://dbpedia.org/ontology/"
             //is full class URI
