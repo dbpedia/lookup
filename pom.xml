@@ -157,13 +157,20 @@
 
         <dependency>
             <groupId>org.semanticweb.yars</groupId>
-            <artifactId>nx-parser</artifactId>
-            <version>1.1</version>
+            <artifactId>nxparser</artifactId>
+            <version>1.2.2</version>
         </dependency>
     </dependencies>
 
 
     <repositories>
+
+        <repository>
+            <id>nxparser-repo</id>
+            <name>NxParser Maven repo</name>
+            <url>http://nxparser.googlecode.com/svn/repository</url>
+        </repository>
+
         <repository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Repository for Maven</name>
