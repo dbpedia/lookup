@@ -62,7 +62,9 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
         }
         else {
             val escapedKeyword = QueryParser.escape(decodedKeyword)
-            val phraseQuery = queryParser.parse('"' + escapedKeyword + '"')  //quotes keep word order
+            val phraseQuery = synchronized { // query parser is not thread safe!
+              queryParser.parse('"' + escapedKeyword + '"')  //quotes keep word order
+            }
             bq.add(phraseQuery, BooleanClause.Occur.MUST)
         }
 
