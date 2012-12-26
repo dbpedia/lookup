@@ -1,8 +1,9 @@
 package org.dbpedia.lookup.entities
 
 import org.scalatest.FunSuite
+import net.liftweb.json._
 
-class EntitiesXmlSerializationTest extends FunSuite {
+trait SerializationTest extends FunSuite {
 
   val template = new Template("http://en.wikipedia.org/wiki/Template:Infobox")
 
@@ -22,7 +23,28 @@ class EntitiesXmlSerializationTest extends FunSuite {
      100
    )
 
-  val serializer = new ResultXmlSerializer()
+}
+
+class EntitiesJsonSerializationTest extends SerializationTest {
+
+  val serializer = new ResultJsonSerializer
+
+  test("a list of result entities should serialize to json correctly") {
+    implicit val formats = net.liftweb.json.DefaultFormats
+
+    val json = serializer.prettyPrint(List(result, result))
+    println(json)
+    val data = Serialization.read[Map[String, List[Result]]](json)
+
+    assert(data("results").size == 2)
+    assert(data("results").head == result)
+  }
+
+}
+
+class EntitiesXmlSerializationTest extends SerializationTest {
+
+  val serializer = new ResultXmlSerializer
 
   test("a list of result entities should serialize to xml correctly") {
     val xml = serializer.serialize(List(result, result))

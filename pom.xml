@@ -18,6 +18,7 @@
         <lucene.core.version>3.0.3</lucene.core.version>
         <jersey.server.version>1.5</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
+        <lift.json.version>2.5-M3</lift.json.version>
     </properties>
 
     <build>
@@ -113,6 +114,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons.compress.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>net.liftweb</groupId>
+          <artifactId>lift-json_${scala.compiler.version}</artifactId>
+          <version>${lift.json.version}</version>
         </dependency>
 
         <dependency>
