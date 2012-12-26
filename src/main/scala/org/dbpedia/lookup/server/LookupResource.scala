@@ -1,8 +1,11 @@
 package org.dbpedia.lookup.server
 
 import javax.ws.rs._
+import javax.ws.rs.core.Context
 import core.Response
 import org.dbpedia.lookup.entities._
+import org.dbpedia.lookup.lucene.Searcher
+import org.dbpedia.lookup.util.Logging
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,60 +15,52 @@ import org.dbpedia.lookup.entities._
  * Exists only for compatibility to old web service URL (including ".asmx").
  */
 
-@Path("/api/search.asmx")
-class LookupResource {
+@Path("/api/search{ext:(.asmx)?}")
+@Produces(Array("application/xml", "application/json"))
+class LookupResource extends Logging {
 
-    // Sets the necessary headers in order to enable CORS
-    private def ok(accept: String, results: List[Result]): Response = {
-        val serializer = (accept contains "application/json") match {
-          case true  => new ResultJsonSerializer
-          case _     => new ResultXmlSerializer
-        }
-        Response.ok().entity(serializer.prettyPrint(results)).header("Access-Control-Allow-Origin", "*").build()
-    }
+    @Context
+    var searcher : Searcher = _
+
+    @DefaultValue("") @HeaderParam("accept")
+    var accept   : String   = _
+
+    @DefaultValue("") @QueryParam("QueryString")
+    var query    : String   = _
+
+    @DefaultValue("") @QueryParam("QueryClass")
+    var ontologyClass : String = _
+
+    @DefaultValue("5") @QueryParam("MaxHits")
+    var maxHits : Int = _
 
     @GET
     @Path("/KeywordSearch")
-    @Produces(Array("application/xml", "application/json"))
-    def keywordSearch(@DefaultValue("") @HeaderParam("accept") accept: String,
-                      @DefaultValue("") @QueryParam("QueryString") query: String,
-                      @DefaultValue("") @QueryParam("QueryClass") ontologyClass: String,
-                      @DefaultValue("") @QueryParam("MaxHits") maxHitsString: String): Response = {
-
-        val results = Server.searcher.keywordSearch(query, ontologyClass, getMaxHits(maxHitsString))
-        System.err.println("KeywordSearch found "+results.length+": MaxHits="+maxHitsString+" QueryClass="+ontologyClass+" QueryString="+query)
-        ok(accept, results)
+    def keywordSearch : Response = {
+      val results = searcher.keywordSearch(query, ontologyClass, maxHits)
+      logger.info("KeywordSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
+      ok(results)
     }
 
     @GET
     @Path("/PrefixSearch")
-    @Produces(Array("application/xml", "application/json"))
-    def prefixSearch(@DefaultValue("") @HeaderParam("accept") accept: String,
-                     @DefaultValue("") @QueryParam("QueryString") query: String,
-                     @DefaultValue("") @QueryParam("QueryClass") ontologyClass: String,
-                     @DefaultValue("") @QueryParam("MaxHits") maxHitsString: String): Response = {
-
-        val results = Server.searcher.prefixSearch(query, ontologyClass, getMaxHits(maxHitsString))
-        System.err.println("PrefixSearch found "+results.length+": MaxHits="+maxHitsString+" QueryClass="+ontologyClass+" QueryString="+query)
-        ok(accept, results)
+    def prefixSearch : Response = {
+      val results = searcher.prefixSearch(query, ontologyClass, maxHits)
+      logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
+      ok(results)
     }
 
-    private def getMaxHits(maxHitsString: String): Int = {
-        try {
-            val maxHits = maxHitsString.toInt
-            if(maxHits < 0) {
-                return Server.MAX_HITS_DEFAULT
-            }
-            maxHits
-        }
-        catch {
-            case e: NumberFormatException => {
-                //System.err.println("WARNING: value of MaxHits must be integer (is '"+maxHitsString+"') setting it to "+MAX_HITS_DEFAULT)
-                Server.MAX_HITS_DEFAULT
-            }
-        }
+    // Sets the necessary headers in order to enable CORS
+    private def ok(results: List[Result]): Response = {
+      Response.ok().entity(serialize(results)).header("Access-Control-Allow-Origin", "*").build()
     }
 
-
+    private def serialize(results: List[Result]): String = {
+      val serializer = (accept contains "application/json") match {
+        case true  => new ResultJsonSerializer
+        case _     => new ResultXmlSerializer
+      }
+      serializer.prettyPrint(results)
+    }
 
 }

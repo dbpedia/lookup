@@ -6,7 +6,7 @@ import org.apache.lucene.index.{Term, IndexWriter}
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import java.io.{FileInputStream, InputStream, File}
 import org.semanticweb.yars.nx.parser.NxParser
-import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil}
+import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil, Logging}
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,10 +16,10 @@ import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil}
  * Indexes the lookup data to a Lucene directory.
  */
 
-class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
+class Indexer(val indexDir: File = LuceneConfig.defaultIndex) extends Logging {
 
     private val indexWriter = new IndexWriter(FSDirectory.open(indexDir), LuceneConfig.analyzer, LuceneConfig.overwriteExisting, LuceneConfig.maxFieldLen)
-    System.err.println("Directory "+indexDir+" opened for indexing")
+    logger.info("Directory "+indexDir+" opened for indexing")
 
     /**
      * Index a data file for the lookup service.
@@ -48,10 +48,10 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
 
             count += 1
             if(count%250000 == 0) {
-                System.err.println(count+" triples read")
+                logger.info(count+" triples read")
             }
             if(count%LuceneConfig.commitAfterNTriples == 0) {
-                System.err.println("Commiting")
+                logger.info("Commiting")
                 indexWriter.commit
             }
         }
@@ -59,18 +59,18 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
         val uriTerm = new Term(LuceneConfig.Fields.URI, currentUri)
         indexWriter.updateDocument(uriTerm, getDocument(uriTerm, fieldCollector))
 
-        System.err.println("Final commit")
+        logger.info("Final commit")
         indexWriter.commit
-        System.err.println(count+" triples indexed. Done")
+        logger.info(count+" triples indexed. Done")
     }
 
     def close() {
         if(LuceneConfig.optimize) {
-            System.err.println("Optimizing index...")
+            logger.info("Optimizing index...")
             indexWriter.optimize
         }
         indexWriter.close
-        System.err.println("Closed index "+indexDir)
+        logger.info("Closed index "+indexDir)
     }
 
 
@@ -104,7 +104,7 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
 }
 
 
-object Indexer {
+object Indexer extends Logging {
 
     /**
      * Index data to a directory.
@@ -124,9 +124,9 @@ object Indexer {
                 in = new BZip2CompressorInputStream(in)
             }
 
-            System.err.println("Indexing "+fileName)
+            logger.info("Indexing "+fileName)
             indexer.index(in, redirects)
-            System.err.println("Done Indexing "+fileName)
+            logger.info("Done Indexing "+fileName)
         }
         indexer.close
     }
@@ -134,7 +134,7 @@ object Indexer {
 
     private def getRedirectUris(redirectsFile: File): Set[String] = {
         var reds = Set[String]()
-        System.err.println("Reading redirects from "+redirectsFile)
+        logger.info("Reading redirects from "+redirectsFile)
         val parser = new NxParser(new FileInputStream(redirectsFile))
         while (parser.hasNext) {
             val triple = parser.next
@@ -143,7 +143,7 @@ object Indexer {
             }
             reds = reds + triple(0).toString
         }
-        System.err.println("Done")
+        logger.info("Done")
         reds
     }
 

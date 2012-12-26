@@ -33,7 +33,6 @@ class EntitiesJsonSerializationTest extends SerializationTest {
     implicit val formats = net.liftweb.json.DefaultFormats
 
     val json = serializer.prettyPrint(List(result, result))
-    println(json)
     val data = Serialization.read[Map[String, List[Result]]](json)
 
     assert(data("results").size == 2)
