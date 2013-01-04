@@ -5,7 +5,7 @@ import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.search._
 import org.apache.lucene.index.{Term, IndexReader}
 import org.dbpedia.lookup.util.WikiUtil
-import org.dbpedia.lookup.server.Result
+import org.dbpedia.lookup.entities._
 import org.apache.lucene.queryParser.QueryParser
 
 /**
@@ -107,21 +107,21 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
 
         val uri: String = doc.get(LuceneConfig.Fields.URI)
         val description: String = doc.get(LuceneConfig.Fields.DESCRIPTION)
-        val ontologyClasses: List[String] = doc.getValues(LuceneConfig.Fields.CLASS) match {
-            case null => List.empty
-            case classes => classes.toList
-        }
-        val categories: Set[String] = doc.getValues(LuceneConfig.Fields.CATEGORY) match {
+        val ontologyClasses: Set[OntologyClass] = doc.getValues(LuceneConfig.Fields.CLASS) match {
             case null => Set.empty
-            case cats => cats.toSet
+            case classes => classes.map(uri => new OntologyClass(uri)).toSet
         }
-        val templates: Set[String] = doc.getValues(LuceneConfig.Fields.TEMPLATE) match {
+        val categories: Set[Category] = doc.getValues(LuceneConfig.Fields.CATEGORY) match {
             case null => Set.empty
-            case temps => temps.toSet
+            case cats => cats.map(uri => new Category(uri)).toSet
         }
-        val redirects: Set[String] = doc.getValues(LuceneConfig.Fields.REDIRECT) match {
+        val templates: Set[Template] = doc.getValues(LuceneConfig.Fields.TEMPLATE) match {
             case null => Set.empty
-            case reds => reds.toSet
+            case temps => temps.map(uri => new Template(uri)).toSet
+        }
+        val redirects: Set[Redirect] = doc.getValues(LuceneConfig.Fields.REDIRECT) match {
+            case null => Set.empty
+            case reds => reds.map(uri => new Redirect(uri)).toSet
         }
         val refCount: Int = doc.get(LuceneConfig.Fields.REFCOUNT) match {
             case null => 0

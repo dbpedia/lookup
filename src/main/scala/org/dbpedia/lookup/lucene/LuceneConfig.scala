@@ -7,7 +7,7 @@ import org.apache.lucene.analysis._
 import java.io.{Reader, File}
 import standard.{StandardFilter, StandardAnalyzer}
 import org.apache.lucene.queryParser.QueryParser
-import org.dbpedia.lookup.util.WikiUtil
+import org.dbpedia.lookup.util.{WikiUtil, Logging}
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,16 +17,16 @@ import org.dbpedia.lookup.util.WikiUtil
  * Lucene configuration data.
  */
 
-object LuceneConfig {
+object LuceneConfig extends Logging {
 
     val INDEX_CONFIG_FILE = "default_index_path"
 
     // Default index directory is read from the configuration file
     private val defaultIndexDir = new File(Source.fromFile(INDEX_CONFIG_FILE).getLines.next)
     def defaultIndex: File = {
-        System.err.println("INFO: using default index specified in '"+INDEX_CONFIG_FILE+"': "+defaultIndexDir)
+        logger.info("Using default index specified in '"+INDEX_CONFIG_FILE+"': "+defaultIndexDir)
         if(!defaultIndexDir.isDirectory) {
-            System.err.println("WARNING: "+defaultIndexDir+" is not a valid directory.")
+            logger.warn(defaultIndexDir+" is not a valid directory.")
         }
         defaultIndexDir
     }
