@@ -81,6 +81,8 @@
                             <mainClass>org.dbpedia.lookup.server.Server</mainClass>
                             <jvmArgs>
                                 <jvmArg>-Xmx512m</jvmArg>
+                                <jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
+                                <jvmArg>-Dhttp.port=1111</jvmArg>
                             </jvmArgs>
                         </launcher>
                         <launcher>
@@ -88,6 +90,7 @@
                             <mainClass>org.dbpedia.lookup.lucene.Indexer</mainClass>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>
+                                <jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
                             </jvmArgs>
                         </launcher>
                     </launchers>
