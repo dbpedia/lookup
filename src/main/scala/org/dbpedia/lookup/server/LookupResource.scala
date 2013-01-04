@@ -37,30 +37,30 @@ class LookupResource extends Logging {
     @GET
     @Path("/KeywordSearch")
     def keywordSearch : Response = {
-      val results = searcher.keywordSearch(query, ontologyClass, maxHits)
-      logger.info("KeywordSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
-      ok(results)
+        val results = searcher.keywordSearch(query, ontologyClass, maxHits)
+        logger.info("KeywordSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
+        ok(results)
     }
 
     @GET
     @Path("/PrefixSearch")
     def prefixSearch : Response = {
-      val results = searcher.prefixSearch(query, ontologyClass, maxHits)
-      logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
-      ok(results)
+        val results = searcher.prefixSearch(query, ontologyClass, maxHits)
+        logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
+        ok(results)
     }
 
     // Sets the necessary headers in order to enable CORS
     private def ok(results: List[Result]): Response = {
-      Response.ok().entity(serialize(results)).header("Access-Control-Allow-Origin", "*").build()
+        Response.ok().entity(serialize(results)).header("Access-Control-Allow-Origin", "*").build()
     }
 
     private def serialize(results: List[Result]): String = {
-      val serializer = (accept contains "application/json") match {
-        case true  => new ResultJsonSerializer
-        case _     => new ResultXmlSerializer
-      }
-      serializer.prettyPrint(results)
+        val serializer = (accept contains "application/json") match {
+            case true  => new ResultJsonSerializer
+            case _     => new ResultXmlSerializer
+        }
+        serializer.prettyPrint(results)
     }
 
 }

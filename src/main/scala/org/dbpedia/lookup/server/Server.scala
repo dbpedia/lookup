@@ -17,21 +17,21 @@ import org.dbpedia.lookup.util.Logging
  */
 
 class SearcherProvider(searcher: Searcher)
-  extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
+    extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
 
 class Server(port: Int, searcher: Searcher) {
 
-  val resources = {
-    val config   = new ClassNamesResourceConfig(classOf[LookupResource])
-    config.getSingletons.add(new SearcherProvider(searcher))
-    config
-  }
+    val resources = {
+        val config   = new ClassNamesResourceConfig(classOf[LookupResource])
+        config.getSingletons.add(new SearcherProvider(searcher))
+        config
+    }
 
-  val serverUri = new URI("http://localhost:" + port.toString + "/")
-  val server    = HttpServerFactory.create(serverUri, resources)
+    val serverUri = new URI("http://localhost:" + port.toString + "/")
+    val server    = HttpServerFactory.create(serverUri, resources)
 
-  def start = server.start
-  def stop  = server.stop(0)
+    def start = server.start
+    def stop  = server.stop(0)
 
 }
 

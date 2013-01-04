@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dbpedia.lookup</groupId>
@@ -21,6 +21,8 @@
         <jersey.server.version>1.5</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
         <lift.json.version>2.5-M3</lift.json.version>
+        <logback.classic.version>1.0.9</logback.classic.version>
+        <yars.nxparser.version>1.2.2</yars.nxparser.version>
     </properties>
 
     <build>
@@ -71,7 +73,7 @@
 
                 <configuration>
                     <args>
-                      <arg>-deprecation</arg>
+                        <arg>-deprecation</arg>
                     </args>
                     <launchers>
                         <launcher>
@@ -110,7 +112,6 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
@@ -150,21 +151,21 @@
         </dependency>
 
         <dependency>
-          <groupId>net.liftweb</groupId>
-          <artifactId>lift-json_${scala.compiler.version}</artifactId>
-          <version>${lift.json.version}</version>
+            <groupId>net.liftweb</groupId>
+            <artifactId>lift-json_${scala.compiler.version}</artifactId>
+            <version>${lift.json.version}</version>
         </dependency>
 
         <dependency>
-          <groupId>ch.qos.logback</groupId>
-          <artifactId>logback-classic</artifactId>
-          <version>1.0.9</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.classic.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.semanticweb.yars</groupId>
             <artifactId>nxparser</artifactId>
-            <version>1.2.2</version>
+            <version>${yars.nxparser.version}</version>
         </dependency>
 
         <dependency>
@@ -173,21 +174,20 @@
             <version>${scala.test.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <repositories>
 
         <repository>
-            <id>sonatype-oss-public</id>
-            <name>Sonatype OSS Public Maven repo</name>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-        </repository>
-
-        <repository>
             <id>nxparser-repo</id>
             <name>NxParser Maven repo</name>
             <url>http://nxparser.googlecode.com/svn/repository</url>
+        </repository>
+
+        <repository>
+            <id>sonatype-oss-public</id>
+            <name>Sonatype OSS Public Maven repo</name>
+            <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
 
     </repositories>
