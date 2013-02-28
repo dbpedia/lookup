@@ -12,14 +12,15 @@ The Keyword Search API can be used to find related DBpedia resources for a given
 
 Example: Places that have the related keyword "berlin"
 
-http://lookup.dbpedia.org/api/search.asmx/KeywordSearch?QueryClass=place&QueryString=berlin
+http://lookup.dbpedia.org/api/search/KeywordSearch?QueryClass=place&QueryString=berlin
+
 ### Prefix Search (i.e. Autocomplete)
 
 The Prefix Search API can be used to implement autocomplete input boxes. For a given partial keyword like *berl* the API returns URIs of related DBpedia resources like http://dbpedia.org/resource/Berlin.
 
 Example: Top five resources for which a keyword starts with "berl"
 
-http://lookup.dbpedia.org/api/search.asmx/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
+http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
 
 ### Parameters
 
@@ -28,6 +29,10 @@ The query parameters accepted by the endpoints are
 * `QueryString`: a string for which a DBpedia URI should be found.
 * `QueryClass`: a DBpedia class from the Ontology that the results should have (for owl#Thing and untyped resource, leave this parameter empty).
 * `MaxHits`: the maximum number of returned results (default: 5)
+
+### JSON support
+
+By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header.
 
 ## Running a local mirror of the webservice
 

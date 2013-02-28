@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.dbpedia.lookup</groupId>
@@ -11,21 +11,47 @@
     <name>DBpedia Lookup Service</name>
 
     <properties>
-        <java.compiler.version>1.6</java.compiler.version>
-        <maven.scala.plugin.version>2.15.0</maven.scala.plugin.version>
-        <scala.compiler.version>2.8.0</scala.compiler.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.scala.plugin.version>3.1.0</maven.scala.plugin.version>
+        <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
+        <scala.compiler.version>2.9.2</scala.compiler.version>
+        <scala.test.version>1.8</scala.test.version>
         <lucene.core.version>3.0.3</lucene.core.version>
         <jersey.server.version>1.5</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
-        <commons.lang.version>2.6</commons.lang.version>
+        <lift.json.version>2.5-M3</lift.json.version>
+        <logback.classic.version>1.0.9</logback.classic.version>
+        <yars.nxparser.version>1.2.2</yars.nxparser.version>
     </properties>
 
     <build>
         <plugins>
 
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>process-test-resources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
                 <version>${maven.scala.plugin.version}</version>
 
                 <executions>
@@ -36,7 +62,6 @@
                         </goals>
                         <phase>compile</phase>
                     </execution>
-
                     <execution>
                         <id>test-compile</id>
                         <goals>
@@ -44,23 +69,20 @@
                         </goals>
                         <phase>test-compile</phase>
                     </execution>
-
-                    <execution>
-                        <id>process-resources</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                    </execution>
                 </executions>
 
                 <configuration>
+                    <args>
+                        <arg>-deprecation</arg>
+                    </args>
                     <launchers>
                         <launcher>
                             <id>Server</id>
                             <mainClass>org.dbpedia.lookup.server.Server</mainClass>
                             <jvmArgs>
                                 <jvmArg>-Xmx512m</jvmArg>
+                                <jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
+                                <jvmArg>-Dhttp.port=1111</jvmArg>
                             </jvmArgs>
                         </launcher>
                         <launcher>
@@ -68,6 +90,7 @@
                             <mainClass>org.dbpedia.lookup.lucene.Indexer</mainClass>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>
+                                <jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
                             </jvmArgs>
                         </launcher>
                     </launchers>
@@ -75,24 +98,21 @@
             </plugin>
 
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.compiler.version}</source>
-                    <target>${java.compiler.version}</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
+                <groupId>org.scalatest</groupId>
+                <artifactId>maven-scalatest-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
     </build>
-
 
     <dependencies>
         <dependency>
@@ -121,25 +141,43 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.server.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons.compress.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${commons.lang.version}</version>
+            <groupId>net.liftweb</groupId>
+            <artifactId>lift-json_${scala.compiler.version}</artifactId>
+            <version>${lift.json.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.classic.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.semanticweb.yars</groupId>
             <artifactId>nxparser</artifactId>
-            <version>1.2.2</version>
+            <version>${yars.nxparser.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.compiler.version}</artifactId>
+            <version>${scala.test.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <repositories>
 
@@ -150,25 +188,18 @@
         </repository>
 
         <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
+            <id>sonatype-oss-public</id>
+            <name>Sonatype OSS Public Maven repo</name>
+            <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
 
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases/</url>
-        </repository>
     </repositories>
-
 
     <pluginRepositories>
         <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases/</url>
+            <id>sonatype-oss-public</id>
+            <name>Sonatype OSS Public Maven repo</name>
+            <url>https://oss.sonatype.org/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
 

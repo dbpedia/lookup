@@ -1,0 +1,64 @@
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/2000/01/rdf-schema#comment> "Berlin is the capital city of Germany and one of the 16 states of Germany. With a population of 3.5\u00A0million people, Berlin is Germany's largest city and is the second most populous city proper and the eighth most populous urban area in the European Union. Located in northeastern Germany, it is the center of the Berlin-Brandenburg Metropolitan Region, which has 5.9\u00A0million residents from over 190 nations. Located in the European Plains, Berlin is influenced by a temperate seasonal climate."@en .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/City> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/City> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Settlement> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/PopulatedPlace> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Place> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Place> .
+<http://dbpedia.org/resource/Berlin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Thing> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Berlin> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Capitals_in_Europe> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:City-states> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:European_Capitals_of_Culture> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:German_state_capitals> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Host_cities_of_the_Summer_Olympic_Games> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Members_of_the_Hanseatic_League> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Populated_places_established_in_the_13th_century> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:States_and_territories_established_in_1237> .
+<http://dbpedia.org/resource/Berlin> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:States_of_Germany> .
+<http://dbpedia.org/resource/Berlin> <http://lexvo.org/ontology#label> "Berlin"@en .
+<http://dbpedia.org/resource/Berlin> <http://lexvo.org/ontology#label> "capital of Germany"@en .
+<http://dbpedia.org/resource/Berlin> <http://dbpedia.org/property/refCount> "100"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/2000/01/rdf-schema#comment> "Beirut is the capital and largest city of Lebanon. As there has been no recent population census, the exact population is unknown; estimates in 2007 ranged from slightly less than 1\u00A0million to slightly more than 2\u00A0million. Located on a peninsula at the midpoint of Lebanon's Mediterranean coast, it serves as the country's largest and main seaport. The Beirut metropolitan area consists of the city and its suburbs."@en .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Settlement> .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/PopulatedPlace> .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Place> .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Place> .
+<http://dbpedia.org/resource/Beirut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Thing> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Beirut> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Amarna_letters_locations> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Ancient_cities> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Ancient_Greek_sites_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Ancient_mints> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Archaeological_sites_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Capitals_in_Asia> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Populated_places_in_the_Beirut_Governorate> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Populated_coastal_places_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Crusades> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Hellenistic_colonies> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Mediterranean> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Mediterranean_port_cities_and_towns_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Phoenician_cities> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Phoenician_sites_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Roman_colonies> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Roman_sites_in_Lebanon> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Populated_places_established_in_the_3rd_millennium_BC> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Paleolithic> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Neolithic_settlements> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Fertile_Crescent> .
+<http://dbpedia.org/resource/Beirut> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Ancient_Levant> .
+<http://dbpedia.org/resource/Beirut> <http://lexvo.org/ontology#label> "Beirut"@en .
+<http://dbpedia.org/resource/Beirut> <http://lexvo.org/ontology#label> "largest city of Lebanon"@en .
+<http://dbpedia.org/resource/Beirut> <http://dbpedia.org/property/refCount> "99"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/2000/01/rdf-schema#comment> "Beirut is an American band which was originally the solo musical project of Santa Fe native Zachary Francis Condon, and later expanded into a band. The band's first performances were in New York, in May 2006, to support the release of their debut album, Gulag Orkestar. Beirut's music combines elements of indie-rock and world music."@en .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Band> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Organisation> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Organization> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Agent> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Thing> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/MusicGroup> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:American_indie_rock_groups> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Musical_groups_from_New_Mexico> .
+<http://dbpedia.org/resource/Beirut_(band)> <http://lexvo.org/ontology#label> "Beirut"@en .
+<http://dbpedia.org/resource/Beirut_(band)> <http://lexvo.org/ontology#label> "American band"@en .
+<http://dbpedia.org/resource/Beirut_(band)> <http://dbpedia.org/property/refCount> "98"^^<http://www.w3.org/2001/XMLSchema#integer> .
