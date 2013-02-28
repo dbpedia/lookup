@@ -121,11 +121,9 @@ The best way to get support or give feedback on the Lookup project is via the [D
 
 The [DBpedia wiki](http://wiki.dbpedia.org/lookup/) also has useful information on the project.
 
-## Team
+## Maintainers
 
-### Maintainers
-
-[Pablo Mendes](http://www.wiwiss.fu-berlin.de/en/institute/pwo/bizer/team/MendesPablo.html) (Freie Universität Berlin)
-
-[Max Jakob](http://www.wiwiss.fu-berlin.de/en/institute/pwo/bizer/team/JakobMax.html) (Freie Universität Berlin)
+* Pablo Mendes [@pablomendes](https://github.com/pablomendes)
+* Max Jakob [@maxjakob](https://github.com/maxjakob)
+* Matt Haynes [@matth](https://github.com/matth)
 
