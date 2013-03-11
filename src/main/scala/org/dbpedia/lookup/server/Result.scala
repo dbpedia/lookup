@@ -20,7 +20,7 @@ class Result(uri: String,
              refCount: Int) {
 
     // get the label of this result URI
-    def label = WikiUtil.wikiDecode(uri.replace("http://dbpedia.org/resource/", ""))
+    def label = WikiUtil.wikiDecode(uri.replace("http://fr.dbpedia.org/resource/", ""))
 
     // make a class label from a class URI (de-camel-case)
     def classLabel(classUri: String): String = {
@@ -33,7 +33,7 @@ class Result(uri: String,
 
     // make a category label from a category URI
     def categoryLabel(categoryUri: String): String = {
-        WikiUtil.wikiDecode(categoryUri.replace("http://dbpedia.org/resource/Category:", ""))
+        WikiUtil.wikiDecode(categoryUri.replace("http://fr.dbpedia.org/resource/Catégorie:", ""))
     }
 
 

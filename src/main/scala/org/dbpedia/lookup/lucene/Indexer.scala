@@ -78,7 +78,7 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
         val doc = new Document()
         doc.add(new Field(LuceneConfig.Fields.URI, uriTerm.text, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
 
-        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://dbpedia.org/resource/", ""))
+        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://fr.dbpedia.org/resource/", ""))
         doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, label, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
 
         val prefixTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(label)
