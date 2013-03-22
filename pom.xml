@@ -6,7 +6,7 @@
 
     <groupId>org.dbpedia.lookup</groupId>
     <artifactId>dbpedia-lookup</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>3.0</version>
     <name>DBpedia Lookup Service</name>
 
@@ -68,6 +68,16 @@
                             <mainClass>org.dbpedia.lookup.lucene.Indexer</mainClass>
                             <jvmArgs>
                                 <jvmArg>-Xmx2g</jvmArg>
+                            </jvmArgs>
+                        </launcher>
+                        <launcher>
+                            <id>CreateLookupIndex</id>
+                            <mainClass>org.dbpedia.lookup.util.CreateLookupIndex</mainClass>
+			                <!--args>
+                				<arg>indexing.properties.fr</arg>
+			                </args-->
+                            <jvmArgs>
+                                <jvmArg>-Xmx3G</jvmArg>
                             </jvmArgs>
                         </launcher>
                     </launchers>

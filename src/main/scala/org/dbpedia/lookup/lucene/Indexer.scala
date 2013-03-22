@@ -16,7 +16,12 @@ import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil}
  * Indexes the lookup data to a Lucene directory.
  */
 
-class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
+class Indexer(
+    val indexDir: File = LuceneConfig.defaultIndex,
+    context : {
+		def langCode : String
+		def resourceNamesSpace : String
+    }) {
 
     private val indexWriter = new IndexWriter(FSDirectory.open(indexDir), LuceneConfig.analyzer, LuceneConfig.overwriteExisting, LuceneConfig.maxFieldLen)
     System.err.println("Directory "+indexDir+" opened for indexing")
@@ -78,7 +83,7 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) {
         val doc = new Document()
         doc.add(new Field(LuceneConfig.Fields.URI, uriTerm.text, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
 
-        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://fr.dbpedia.org/resource/", ""))
+        val label = WikiUtil.wikiDecode(uriTerm.text.replace(context.resourceNamesSpace, ""))
         doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, label, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
 
         val prefixTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(label)
@@ -116,7 +121,7 @@ object Indexer {
 
         val redirects = getRedirectUris(redirectsFile)
 
-        val indexer = new Indexer(indexDir)
+        val indexer = new Indexer(indexDir,new Object {val langCode="fr"; val resourceNamesSpace = "http://fr.dbpedia.org/resource/"})
 
         for(fileName <- data) {
             var in: InputStream = new FileInputStream(fileName)
