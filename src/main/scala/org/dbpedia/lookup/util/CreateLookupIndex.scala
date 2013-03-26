@@ -1,5 +1,4 @@
 /**
- * Adapted from core/org.dbpedia.spotlight.util.CreateLexicalizations (Copyright 2011 Pablo Mendes, Max Jakob)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
+ * @author Julien Cojan
+ * adapted from core/org.dbpedia.spotlight.util.CreateLexicalizations (Copyright 2011 Pablo Mendes, Max Jakob)
+ * 
+ * Usage mvn scala:run -Dlauncher=CreateLookupIndex -DaddArgs=indexing.properties
+ * 
+ * See createIndexFromSpotlightIndex.sh to generate the input files for the indexer from Spotlight index and DBpedia dumps.
  */
 
 package org.dbpedia.lookup.util
@@ -174,70 +180,6 @@ object CreateLookupIndex {
         out.println(uri+"\t"+score+"\t"+scoreRel)
     }
 
-//    private def writeReadable(out : PrintStream, uri : String, sf : String, score : Double, scoreRel : String) {
-//        out.println(uri+"\t"+score+"\t"+sf+"\t"+scoreRel)
-//    }
-
-    // copied from DBpedia Quad.scala
-//    private def escapeString(sb : StringBuilder, input : String) : StringBuilder =
-//	{
-//        // iterate over code points (http://blogs.sun.com/darcy/entry/iterating_over_codepoints)
-//        val inputLength = input.length
-//        var offset = 0
-//
-//        while (offset < inputLength)
-//        {
-//            val c = input.codePointAt(offset)
-//            offset += Character.charCount(c)
-//
-//    		//Ported from Jena's NTripleWriter
-//			if (c == '\\' || c == '"')
-//			{
-//				sb append '\\' append c.toChar
-//			}
-//			else if (c == '\n')
-//			{
-//				sb append "\\n"
-//			}
-//			else if (c == '\r')
-//			{
-//				sb append "\\r";
-//			}
-//			else if (c == '\t')
-//			{
-//				sb append "\\t"
-//			}
-//			else if (c >= 32 && c < 127)
-//			{
-//				sb append c.toChar
-//			}
-//			else
-//			{
-//				val hexStr = c.toHexString.toUpperCase
-//                val hexStrLen = hexStr.length
-//
-//                if (c <= 0xffff)
-//                {
-//                    // 16-bit code point
-//                    sb append "\\u"
-//                    sb append "0" * (4 - hexStrLen)  // leading zeros
-//                }
-//                else if (c <= 0x10ffff)  // biggest representable code point
-//                {
-//                    // 32-bit code point
-//                    sb append "\\U"
-//                    sb append "0" * (8 - hexStrLen)  // leading zeros
-//                }
-//                else
-//                {
-//                    throw new Exception("code point "+c+" outside of range (0x0000..0x10ffff)")
-//                }
-//
-//				sb append hexStr
-//			}
-//		}
-//		return sb
-//	}
 
 
 }
