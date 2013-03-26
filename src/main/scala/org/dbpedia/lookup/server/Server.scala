@@ -13,6 +13,8 @@ import org.dbpedia.lookup.lucene.Searcher
  * Date: 17.01.11
  * Time: 13:48
  * DBpedia Lookup Server
+ * 
+ * Usage : mvn scala:run -Dlauncher=Server -DaddArgs=indexing.properties
  */
 
 object Server {
