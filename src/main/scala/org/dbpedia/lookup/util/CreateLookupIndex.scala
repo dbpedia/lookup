@@ -61,7 +61,7 @@ object CreateLookupIndex {
         
         MIN_PAIR_COUNT = properties.getProperty("org.dbpedia.lookup.min_pair_count","20").toInt;
         
-        val ouputFilePath = properties.getProperty("org.dbpedia.spotlight.data.lookupInputFile")
+        val ouputFilePath = properties.getProperty("org.dbpedia.lookup.data.surfaceFormParsingOutput")
         val outFile = new File(ouputFilePath)
                 
 
