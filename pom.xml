@@ -17,6 +17,7 @@
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <scala.compiler.version>2.9.2</scala.compiler.version>
         <scala.test.version>1.8</scala.test.version>
+        <dbpedia.extraction.version>3.8</dbpedia.extraction.version>
         <lucene.core.version>3.0.3</lucene.core.version>
         <jersey.server.version>1.5</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
@@ -126,6 +127,12 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.compiler.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dbpedia.extraction</groupId>
+            <artifactId>core</artifactId>
+            <version>${dbpedia.extraction.version}</version>
         </dependency>
 
         <dependency>

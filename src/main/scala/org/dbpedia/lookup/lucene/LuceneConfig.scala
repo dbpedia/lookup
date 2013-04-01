@@ -7,7 +7,7 @@ import org.apache.lucene.analysis._
 import java.io.{Reader, File}
 import standard.{StandardFilter, StandardAnalyzer}
 import org.apache.lucene.queryParser.QueryParser
-import org.dbpedia.lookup.util.{WikiUtil, Logging}
+import org.dbpedia.lookup.util.Logging
 
 /**
  * Created by IntelliJ IDEA.

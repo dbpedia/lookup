@@ -1,6 +1,6 @@
 package org.dbpedia.lookup.entities
 
-import org.dbpedia.lookup.util.WikiUtil._
+import org.dbpedia.extraction.util.WikiUtil._
 
 trait Uri   { val uri   : String }
 trait Label { val label : String }

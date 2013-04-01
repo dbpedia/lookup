@@ -6,7 +6,8 @@ import org.apache.lucene.index.{Term, IndexWriter}
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import java.io.{FileInputStream, InputStream, File}
 import org.semanticweb.yars.nx.parser.NxParser
-import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil, Logging}
+import org.dbpedia.lookup.util.{DBpedia2Lucene, Logging}
+import org.dbpedia.extraction.util.WikiUtil
 
 /**
  * Created by IntelliJ IDEA.

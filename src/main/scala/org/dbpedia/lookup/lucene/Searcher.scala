@@ -4,7 +4,7 @@ import java.io.File
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.search._
 import org.apache.lucene.index.{Term, IndexReader}
-import org.dbpedia.lookup.util.WikiUtil
+import org.dbpedia.extraction.util.WikiUtil
 import org.dbpedia.lookup.entities._
 import org.apache.lucene.queryParser.QueryParser
 
