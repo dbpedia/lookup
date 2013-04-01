@@ -1,4 +1,4 @@
-package org.dbpedia.lookup.util
+package org.dbpedia.lookup.inputformat
 
 import org.semanticweb.yars.nx.parser.NxParser
 import java.io.InputStream
@@ -12,7 +12,7 @@ import org.dbpedia.lookup.lucene.LuceneConfig
  * Class to itereate over DBpedia NTriples dataset and
  */
 
-class DBpedia2Lucene(val dataSet: InputStream, val redirects: Set[String]) extends Traversable[(String,String,String)] {
+class DBpediaNTriplesInputFormat(val dataSet: InputStream, val redirects: Set[String]) extends Traversable[(String,String,String)] {
 
     private val it = new NxParser(dataSet)
 

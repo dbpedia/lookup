@@ -8,8 +8,7 @@ import java.io.{FileInputStream, InputStream, File}
 import org.semanticweb.yars.nx.parser.NxParser
 import org.dbpedia.extraction.util.WikiUtil
 import org.slf4j.LoggerFactory
-import org.dbpedia.lookup.util.DBpedia2Lucene
-import org.dbpedia.lookup.inputformat.PignlprocTSVInputFormat
+import org.dbpedia.lookup.inputformat.{DBpediaNTriplesInputFormat, PignlprocTSVInputFormat}
 import org.apache.lucene.search.{IndexSearcher, TermQuery}
 
 /**
@@ -148,8 +147,8 @@ object Indexer extends Logging {
 
     private def getDataInput(fileName: String, inputStream: InputStream, redirectsFile: File) = {
         if (fileName.contains(".nt") || fileName.contains(".nq")) {
-            logger.debug("using DBpedia2Lucene")
-            new DBpedia2Lucene(in, getRedirectUris(redirectsFile))
+            logger.debug("using DBpediaNTriplesInputFormat")
+            new DBpediaNTriplesInputFormat(in, getRedirectUris(redirectsFile))
         }
         else if (fileName.contains(".tsv")) {
             logger.debug("using PignlprocTSVInputFormat")
