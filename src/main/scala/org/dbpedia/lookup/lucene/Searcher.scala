@@ -4,7 +4,7 @@ import java.io.File
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.search._
 import org.apache.lucene.index.{Term, IndexReader}
-import org.dbpedia.lookup.util.WikiUtil
+import org.dbpedia.extraction.util.WikiUtil
 import org.dbpedia.lookup.entities._
 import org.apache.lucene.queryParser.QueryParser
 
@@ -16,9 +16,9 @@ import org.apache.lucene.queryParser.QueryParser
  * Class to query the Lucene index for the best URI given a surface form.
  */
 
-class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
+class Searcher(val indexDir: File) {
 
-    private val indexReader = IndexReader.open(FSDirectory.open(indexDir), true)  // read-only
+    private val indexReader = IndexReader.open(FSDirectory.open(indexDir))
     private val indexSearcher = new IndexSearcher(indexReader)
     private val sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
     private val queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, LuceneConfig.analyzer)
@@ -41,8 +41,8 @@ class Searcher(val indexDir: File = LuceneConfig.defaultIndex) {
     }
 
     def close() {
-        indexSearcher.close
-        indexReader.close
+        indexSearcher.close()
+        indexReader.close()
     }
 
 
