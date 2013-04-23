@@ -9,7 +9,10 @@ import org.dbpedia.extraction.util.WikiUtil
  * Class to itereate over a pignlproc nerd-stats result.
  */
 
-class PignlprocTSVInputFormat(dataSet: InputStream) extends Traversable[(String,String,String)] {
+class PignlprocTSVInputFormat(dataSet: InputStream, pSfGivenUriThreshold: Double, uriField: Int=0, sfField: Int=1, pSfGivenUriField: Int=3, refCountField: Int=6)
+    extends InputFormat {
+
+    val DBPEDIA_RESOURCE_NAMESPACE = "http://dbpedia.org/resource/"
 
     private val it = Source.fromInputStream(dataSet, "utf-8").getLines()
 
@@ -18,16 +21,18 @@ class PignlprocTSVInputFormat(dataSet: InputStream) extends Traversable[(String,
         while(it.hasNext) {
             val elements = it.next().split("\t")
 
-            val uri = WikiUtil.wikiEncode(elements(0))
-            val sf = elements(1)
-            val pUriGivenSf = elements(2).toDouble
-            val pSfGivenUri = elements(3).toDouble
-            val pSf = elements(4).toDouble
-            val wikiPageId = elements(5).toInt
-            val uriCount = elements(6).toInt
+            val uri = DBPEDIA_RESOURCE_NAMESPACE + WikiUtil.wikiEncode(elements(uriField))
+            val sf = elements(sfField)
+            //val pUriGivenSf = elements(2)
+            val pSfGivenUri = elements(pSfGivenUriField)
+            //val pSf = elements(4)
+            //val wikiPageId = elements(5)
+            val uriCount = elements(refCountField)
 
-            f(uri, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, sf)
-            f(uri, LuceneConfig.Fields.REFCOUNT, uriCount)
+            if (pSfGivenUri.toDouble > pSfGivenUriThreshold) {
+                f( (uri, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, sf) )
+            }
+            f( (uri, LuceneConfig.Fields.REFCOUNT, uriCount) )
         }
 
     }

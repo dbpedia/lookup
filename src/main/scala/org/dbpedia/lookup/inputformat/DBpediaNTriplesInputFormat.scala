@@ -5,20 +5,14 @@ import java.io.InputStream
 import org.dbpedia.lookup.lucene.LuceneConfig
 
 /**
- * Created by IntelliJ IDEA.
- * User: Max
- * Date: 18.01.11
- * Time: 10:51
  * Class to itereate over DBpedia NTriples dataset and
  */
-
-class DBpediaNTriplesInputFormat(val dataSet: InputStream, val redirects: Set[String]) extends Traversable[(String,String,String)] {
+class DBpediaNTriplesInputFormat(val dataSet: InputStream, val redirects: scala.collection.Set[String]) extends InputFormat {
 
     private val it = new NxParser(dataSet)
 
     val predicate2field = Map(
         "http://lexvo.org/ontology#label" -> LuceneConfig.Fields.SURFACE_FORM_KEYWORD,   // no DBpedia dataset, has to be created
-        "http://lexvo.org/id/label" -> LuceneConfig.Fields.SURFACE_FORM_KEYWORD,         // no DBpedia dataset, has to be created    //TODO delete
         "http://dbpedia.org/property/refCount" -> LuceneConfig.Fields.REFCOUNT,  // no DBpedia dataset, has to be created
         "http://dbpedia.org/ontology/abstract" -> LuceneConfig.Fields.DESCRIPTION,
         "http://www.w3.org/2000/01/rdf-schema#comment" -> LuceneConfig.Fields.DESCRIPTION,
@@ -38,8 +32,8 @@ class DBpediaNTriplesInputFormat(val dataSet: InputStream, val redirects: Set[St
 
             predicate2field.get(pred) match {
                 case Some(field: String) if(redirects.isEmpty || !redirects.contains(uri)) => {
-                    if(field == LuceneConfig.Fields.REDIRECT) {   // make it a "hasRedirect" relation
-                        f( (obj, field, uri) )                    //TODO FIXME this conflicts with the indexing policy of sorting by subject URI (redirects will not be correct in the index)
+                    if(field == LuceneConfig.Fields.REDIRECT) {
+                        f( (obj, field, uri) )   // make it a "hasRedirect" relation
                     }
                     else {
                         f( (uri, field, obj) )
