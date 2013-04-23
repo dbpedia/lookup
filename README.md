@@ -57,31 +57,17 @@ The server should now be running at http://localhost:1111
 
 Rebuilding an index is usually not required, if you only intend on running a local mirror of the service you can donwload a prebuilt index as outlined above.
 
-To re-build the index you will require ..
+To re-build the index you will require
 
 * DBpedia datasets
-* Counts of Wikipedia inlinks for all resources
-* Set of surface forms for resources
+* pignlproc output from [nerd-stats.pig](https://github.com/dbpedia-spotlight/pignlproc/blob/master/examples/nerd-stats/nerd-stats.pig)
 * Unix
 
-### Get a file with Refcounts
-
-Count the number of Wikipedia page inlinks for a resource. This number is required for ranking. Store them in N-Triples format with the predicate http://dbpedia.org/property/refCount, for example:
-
-      <http://dbpedia.org/resource/ABBA> 
-      <http://dbpedia.org/property/refCount> 
-      "1234"^^<http://www.w3.org/2001/XMLSchema#integer> .
-
-### Get a list of surface forms for a resource
-
-Take for example anchor links of wiki page links that point to a resource, but only take the ones that appear X times or more often (X should be at least 30 or 50). Store them in N-Triples format with the predicate http://lexvo.org/ontology#label, for example:
-
-      <http://dbpedia.org/resource/United_States> 
-      <http://lexvo.org/ontology#label>
-      "USA"@en .
 
 ### Get the following DBpedia datasets
+from http://downloads.dbpedia.org/current/en/
 
+* redirects\_en.nt
 * short\_abstracts\_en.nt
 * instance\_types\_en.nt
 * article\_categories\_en.nt
@@ -90,29 +76,25 @@ Take for example anchor links of wiki page links that point to a resource, but o
 
 This is necessary because indexing in sorted order is significantly faster.
 
-Note: if the input is not sorted the index will be not as expected
-
-      cat ref_counts.nt         \
-          surface_forms.nt      \
-          instance_types_en.nt  \
+      cat instance_types_en.nt  \
           short_abstracts_en.nt \
-          article_categories_en.nt | sort >data-to-be-indexed.nt
+          article_categories_en.nt | sort >all_dbpedia_data.nt
 
 ### Get the dataset redirects\_en.nt
 
 Redirects are not indexed, but they are excluded as targets of lookup.
 
-### Run Indexer with three arguments
+### Run Indexer
 
-1. target Lucene directory (create an empty one if necessary),
-  e.g. 'c:\lucene\_lookup\_index'
-2. redirects dataset,
-  e.g. 'c:\redirects\_en.nt'
-3. concatenated and sorted data,
-  e.g. 'c:\data-to-be-indexed.nt'
+The indexer has to be run twice:
 
+1. with the DBpedia data 
 
-      mvn scala:run -Dlauncher=Indexer "-DaddArgs=c:\lucene_lookup_index|c:\redirects_en.nt|c:\data-to-be-indexed.nt"
+        ./run Indexer lookup_index_dir redirects_en.nt all_dbpedia_data.nt
+
+2. with the pignlproc data
+
+        ./run Indexer lookup_index_dir redirects_en.nt nerd_stats_output.tsv
 
 ## Support and feedback
 
