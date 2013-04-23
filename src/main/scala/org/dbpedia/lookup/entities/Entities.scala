@@ -19,7 +19,9 @@ case class OntologyClass(uri: String) extends Uri with Label {
         if (uri endsWith "owl#Thing") {
             "owl#Thing"
         } else {
-            val s = wikiDecode(uri.replace("http://dbpedia.org/ontology/", ""))
+            val s = wikiDecode(uri.replace("http://dbpedia.org/ontology/", "")
+                                  .replace("http://schema.org/", "")
+            )
                 s.replaceAll("([A-Z])", " $1").trim.toLowerCase
         }
         }
