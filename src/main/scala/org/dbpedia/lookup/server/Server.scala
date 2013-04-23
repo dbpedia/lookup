@@ -6,6 +6,7 @@ import com.sun.jersey.spi.inject.SingletonTypeInjectableProvider
 import javax.ws.rs.core.Context
 import java.net.URI
 import org.dbpedia.lookup.lucene.Searcher
+import java.io.File
 import org.dbpedia.lookup.util.Logging
 
 /**
@@ -22,7 +23,7 @@ class SearcherProvider(searcher: Searcher)
 class Server(port: Int, searcher: Searcher) {
 
     val resources = {
-        val config   = new ClassNamesResourceConfig(classOf[LookupResource])
+        val config = new ClassNamesResourceConfig(classOf[LookupResource])
         config.getSingletons.add(new SearcherProvider(searcher))
         config
     }
@@ -30,8 +31,12 @@ class Server(port: Int, searcher: Searcher) {
     val serverUri = new URI("http://localhost:" + port.toString + "/")
     val server    = HttpServerFactory.create(serverUri, resources)
 
-    def start = server.start
-    def stop  = server.stop(0)
+    def start() {
+        server.start()
+    }
+    def stop() {
+        server.stop(0)
+    }
 
 }
 
@@ -40,11 +45,12 @@ object Server extends Logging {
     @volatile private var running = true
 
     def main(args : Array[String]) {
+        val indexDir = new File(args(0))
 
         val port   = System.getProperty("http.port", "1111").toInt
-        val server = new Server(port, new Searcher)
+        val server = new Server(port, new Searcher(indexDir))
 
-        server.start
+        server.start()
 
         val baseUri = server.serverUri.toString
 
@@ -53,7 +59,7 @@ object Server extends Logging {
         //Open browser
         try {
             val example = new URI(baseUri + "api/search/KeywordSearch?QueryString=Berlin")
-            java.awt.Desktop.getDesktop().browse(example)
+            java.awt.Desktop.getDesktop.browse(example)
         }
         catch {
             case e : Exception => logger.error("Could not open browser. ", e)
@@ -64,7 +70,7 @@ object Server extends Logging {
         }
 
         //Stop the HTTP server
-        server.stop
+        server.stop()
     }
 
 }

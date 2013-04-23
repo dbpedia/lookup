@@ -44,13 +44,12 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ### Download and configure the index
 
-    wget http://spotlight.dbpedia.org/download/lookup_index.tgz
-    tar zxvf lookup_index.tgz
-    echo "./network/www5/dbpedia-lookup/lookup_index" > default_index_path
+    wget http://spotlight.dbpedia.org/download/dbpedia-lookup-index-3.8.tgz
+    tar zxvf dbpedia-lookup-index-3.8.tgz
 
 ### Run the server
 
-    mvn scala:run
+    ./run Server dbpedia-lookup-index-3.8
 
 The server should now be running at http://localhost:1111
 
