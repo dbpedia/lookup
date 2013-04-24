@@ -8,13 +8,8 @@ import org.dbpedia.lookup.lucene.Searcher
 import org.dbpedia.lookup.util.Logging
 
 /**
- * Created by IntelliJ IDEA.
- * User: Max
- * Date: 17.01.11
- * Time: 13:48
- * Exists only for compatibility to old web service URL (including ".asmx").
+ * Controller for DBpedia Lookup web service.
  */
-
 @Path("/api/search{ext:(.asmx)?}")
 @Produces(Array("application/xml", "application/json"))
 class LookupResource extends Logging {

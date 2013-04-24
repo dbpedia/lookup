@@ -1,6 +1,6 @@
 package org.dbpedia.lookup.entities
 
-import org.dbpedia.lookup.util.WikiUtil._
+import org.dbpedia.extraction.util.WikiUtil._
 
 trait Uri   { val uri   : String }
 trait Label { val label : String }
@@ -19,7 +19,9 @@ case class OntologyClass(uri: String) extends Uri with Label {
         if (uri endsWith "owl#Thing") {
             "owl#Thing"
         } else {
-            val s = wikiDecode(uri.replace("http://dbpedia.org/ontology/", ""))
+            val s = wikiDecode(uri.replace("http://dbpedia.org/ontology/", "")
+                                  .replace("http://schema.org/", "")
+            )
                 s.replaceAll("([A-Z])", " $1").trim.toLowerCase
         }
         }

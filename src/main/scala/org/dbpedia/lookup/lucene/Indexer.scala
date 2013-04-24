@@ -2,98 +2,115 @@ package org.dbpedia.lookup.lucene
 
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.document.{Field, Document}
-import org.apache.lucene.index.{Term, IndexWriter}
+import org.apache.lucene.index.{IndexReader, Term, IndexWriter}
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import java.io.{FileInputStream, InputStream, File}
 import org.semanticweb.yars.nx.parser.NxParser
-import org.dbpedia.lookup.util.{DBpedia2Lucene, WikiUtil, Logging}
+import org.dbpedia.extraction.util.WikiUtil
+import org.dbpedia.lookup.inputformat.{InputFormat, DBpediaNTriplesInputFormat, PignlprocTSVInputFormat}
+import org.apache.lucene.search.{IndexSearcher, TermQuery}
+import org.dbpedia.lookup.util.Logging
 
 /**
- * Created by IntelliJ IDEA.
- * User: Max
- * Date: 14.01.11
- * Time: 17:01
  * Indexes the lookup data to a Lucene directory.
  */
+class Indexer(val indexDir: File) extends Logging {
 
-class Indexer(val indexDir: File = LuceneConfig.defaultIndex) extends Logging {
-
-    private val indexWriter = new IndexWriter(FSDirectory.open(indexDir), LuceneConfig.analyzer, LuceneConfig.overwriteExisting, LuceneConfig.maxFieldLen)
+    private val indexWriter = new IndexWriter(FSDirectory.open(indexDir), LuceneConfig.indexWriterConfig)
+    indexWriter.commit()
+    private val indexSearcher = new IndexSearcher(IndexReader.open(FSDirectory.open(indexDir)))
     logger.info("Directory "+indexDir+" opened for indexing")
 
     /**
      * Index a data file for the lookup service.
      */
-    def index(dataSetStream: InputStream, redirects: Set[String]) {
-        //TODO CAUTION: this assumes sorted input!
-
-        //cat dataset1.nt dataset2.nt dataset3.nt | sort >indexdata.nt
-
+    def index(dataTraversable: InputFormat) {
         var count = 0
-        var currentUri = ""
-        var fieldCollector = Map[String,Set[String]]()
+        val collector = scala.collection.mutable.HashMap[String, scala.collection.mutable.HashMap[String, scala.collection.mutable.HashSet[String]]]()
 
-        for((uri, field, value) <- new DBpedia2Lucene(dataSetStream, redirects)) {
-
-            if(currentUri != "" && currentUri != uri) {
-                if(fieldCollector.nonEmpty) {
-                    val uriTerm = new Term(LuceneConfig.Fields.URI, currentUri)
-                    indexWriter.updateDocument(uriTerm, getDocument(uriTerm, fieldCollector))
-                }
-                fieldCollector = Map[String,Set[String]]()
-            }
-
-            fieldCollector = fieldCollector.updated(field, fieldCollector.get(field).getOrElse(Set()) + value)
-            currentUri = uri
+        dataTraversable.foreach{ case (uri:String, field:String, value:String) => {
+            val fields = collector.getOrElse(uri, scala.collection.mutable.HashMap[String, scala.collection.mutable.HashSet[String]]())
+            val values: scala.collection.mutable.HashSet[String] = fields.getOrElse(field, scala.collection.mutable.HashSet[String]())
+            values.add(value)
+            fields.put(field, values)
+            collector.put(uri, fields)
 
             count += 1
-            if(count%250000 == 0) {
-                logger.info(count+" triples read")
+            if(count%100000 == 0) {
+                logger.info(count+" data points read")
             }
-            if(count%LuceneConfig.commitAfterNTriples == 0) {
-                logger.info("Commiting")
-                indexWriter.commit
+            if(count%LuceneConfig.commitAfterDataPointsNum == 0) {
+                updateIndex(collector)
+                collector.clear()
             }
-        }
+        }}
+        updateIndex(collector)
+        logger.info(count+" data points indexed. Done")
+
+        //TODO remove?
+        logger.info("Optimizing")
+        indexWriter.optimize()
+        logger.info("Done optimizing")
+    }
+
+
+    private def updateIndex(collector:scala.collection.mutable.HashMap[String,scala.collection.mutable.HashMap[String, scala.collection.mutable.HashSet[String]]]) {
+        logger.info("Updating")
+        collector.foreach(t => {
+            val (uri, fields) = t
+            updateDataForUri(uri, fields)
+        })
+        logger.info("Committing")
+        indexWriter.commit()
+}
+
+    private def updateDataForUri(currentUri: String, fieldCollector:scala.collection.mutable.HashMap[String, scala.collection.mutable.HashSet[String]]) {
 
         val uriTerm = new Term(LuceneConfig.Fields.URI, currentUri)
-        indexWriter.updateDocument(uriTerm, getDocument(uriTerm, fieldCollector))
+        val hits = indexSearcher.search(new TermQuery(uriTerm), 2)
 
-        logger.info("Final commit")
-        indexWriter.commit
-        logger.info(count+" triples indexed. Done")
+        val doc =
+            if (hits.scoreDocs.length == 1) {
+                indexSearcher.doc(hits.scoreDocs(0).doc)
+            } else if (hits.scoreDocs.length == 0) {
+                val d = new Document
+                updateField(d, new Field(LuceneConfig.Fields.URI, uriTerm.text, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
+
+                val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://dbpedia.org/resource/", ""))
+                updateField(d, new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, label, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO))
+
+                val prefixTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(label)
+                updateField(d, new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, prefixTerm, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
+
+                d
+            } else { //  if (hits.scoreDocs.length > 1) {
+                throw new IllegalStateException("Given Term matches more than 1 document in the index.")
+            }
+
+        indexWriter.updateDocument(uriTerm, getUpdatedDocument(doc, uriTerm, fieldCollector))
     }
 
     def close() {
-        if(LuceneConfig.optimize) {
-            logger.info("Optimizing index...")
-            indexWriter.optimize
-        }
-        indexWriter.close
+        indexWriter.close()
         logger.info("Closed index "+indexDir)
     }
 
 
-    private def getDocument(uriTerm: Term, fields: Map[String,Set[String]]): Document = {
-        val doc = new Document()
-        doc.add(new Field(LuceneConfig.Fields.URI, uriTerm.text, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
-
-        val label = WikiUtil.wikiDecode(uriTerm.text.replace("http://dbpedia.org/resource/", ""))
-        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, label, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
-
-        val prefixTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(label)
-        doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, prefixTerm, Field.Store.NO, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
-
+    private def getUpdatedDocument(doc: Document, uriTerm: Term, fields: scala.collection.Map[String, scala.collection.Set[String]]): Document = {
         for((field, valueSet) <- fields) {
+            val addedPrefixTerms = new scala.collection.mutable.HashSet[String]()
             for(value <- valueSet) {
                 if(field == LuceneConfig.Fields.SURFACE_FORM_KEYWORD) {
-                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, value, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.NO))
+                    updateField(doc, new Field(LuceneConfig.Fields.SURFACE_FORM_KEYWORD, value, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.NO))
 
                     val prefixTerm = LuceneConfig.PrefixSearchPseudoAnalyzer.analyze(value)
-                    doc.add(new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, prefixTerm, Field.Store.NO, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
+                    if (!addedPrefixTerms.contains(prefixTerm)) {
+                        updateField(doc, new Field(LuceneConfig.Fields.SURFACE_FORM_PREFIX, prefixTerm, Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.NO))
+                        addedPrefixTerms.add(prefixTerm)
+                    }
                 }
                 else {
-                    doc.add(new Field(field, value, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
+                    updateField(doc, new Field(field, value, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS, Field.TermVector.NO))
                 }
             }
         }
@@ -101,39 +118,57 @@ class Indexer(val indexDir: File = LuceneConfig.defaultIndex) extends Logging {
         doc
     }
 
+    private def updateField(doc: Document, field: Field) {
+        doc.add(field)
+    }
+
 }
 
 
 object Indexer extends Logging {
 
+    private val pSfGivenUriThreshold = 0.001
+
     /**
      * Index data to a directory.
      */
     def main(args: Array[String]) {
-        val indexDir = new File(args.head)
-        val redirectsFile = new File(args.tail.head)
-        val data = args.tail.tail
-
-        val redirects = getRedirectUris(redirectsFile)
+        val indexDir = new File(args(0))
+        val redirectsFile = new File(args(1))
+        val data = args.drop(2)
 
         val indexer = new Indexer(indexDir)
 
         for(fileName <- data) {
             var in: InputStream = new FileInputStream(fileName)
-            if(fileName.endsWith(".bz2")) {
+            if (fileName.endsWith(".bz2")) {
                 in = new BZip2CompressorInputStream(in)
             }
 
             logger.info("Indexing "+fileName)
-            indexer.index(in, redirects)
+            indexer.index(getDataInput(fileName, in, redirectsFile))
             logger.info("Done Indexing "+fileName)
         }
-        indexer.close
+        indexer.close()
     }
 
+    private def getDataInput(fileName: String, inputStream: InputStream, redirectsFile: File) = {
+        if (fileName.contains(".nt") || fileName.contains(".nq")) {
+            logger.debug("using DBpediaNTriplesInputFormat")
+            new DBpediaNTriplesInputFormat(inputStream, getRedirectUris(redirectsFile))
+        }
+        else if (fileName.contains(".tsv")) {
+            logger.debug("using PignlprocTSVInputFormat")
+            val refCountField = if (fileName.contains("_alx")) 7 else 6
+            new PignlprocTSVInputFormat(inputStream, pSfGivenUriThreshold, refCountField=refCountField)
+        }
+        else {
+            throw new IllegalArgumentException("only know how to handle file types .nt, .nq and .tsv")
+        }
+    }
 
-    private def getRedirectUris(redirectsFile: File): Set[String] = {
-        var reds = Set[String]()
+    private def getRedirectUris(redirectsFile: File): scala.collection.Set[String] = {
+        val reds = new scala.collection.mutable.HashSet[String]()
         logger.info("Reading redirects from "+redirectsFile)
         val parser = new NxParser(new FileInputStream(redirectsFile))
         while (parser.hasNext) {
@@ -141,9 +176,9 @@ object Indexer extends Logging {
             if(triple(1).toString != "http://dbpedia.org/ontology/wikiPageRedirects") {
                 throw new Exception("predicate must be http://dbpedia.org/ontology/wikiPageRedirects; got "+triple(1).toString)
             }
-            reds = reds + triple(0).toString
+            reds.add(triple(0).toString)
         }
-        logger.info("Done")
+        logger.info("Done reading redirects")
         reds
     }
 
