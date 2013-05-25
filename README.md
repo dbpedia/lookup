@@ -36,7 +36,15 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ## Running a local mirror of the webservice
 
-### Clone and build the project
+### Clone and build the DBpedia extraction framework
+DBpedia Lookup depends on the core of the DBpedia extraction framework, which is not available in a public Maven repo at the moment.
+    
+    git clone git://github.com/dbpedia/extraction-framework.git
+    cd extraction-framework
+    git checkout DBpedia_3.8
+    mvn clean install
+
+### Clone and build DBpedia Lookup
 
     git clone git://github.com/dbpedia/lookup.git
     cd lookup
@@ -44,8 +52,8 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ### Download and configure the index
 
-    wget http://wifo5-04.informatik.uni-mannheim.de/downloads/dbpedia-lookup-index-3.8.tgz
-    tar zxvf dbpedia-lookup-index-3.8.tgz
+    wget http://spotlight.dbpedia.org/download/dbpedia-lookup-index-3.8.tgz
+    tar xzvf dbpedia-lookup-index-3.8.tgz
 
 ### Run the server
 
