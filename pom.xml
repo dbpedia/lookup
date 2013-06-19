@@ -6,7 +6,7 @@
 
     <groupId>org.dbpedia.lookup</groupId>
     <artifactId>dbpedia-lookup</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>3.1</version>
     <name>DBpedia Lookup Service</name>
 
