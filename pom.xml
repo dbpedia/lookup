@@ -15,13 +15,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.scala.plugin.version>3.1.0</maven.scala.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
-        <scala.compiler.version>2.9.2</scala.compiler.version>
-        <scala.test.version>1.8</scala.test.version>
-        <dbpedia.extraction.version>3.8</dbpedia.extraction.version>
+        <scala.compiler.version.revision>2.11.7</scala.compiler.version.revision>
+        <scala.compiler.version>2.11</scala.compiler.version>
+        <scala.test.version>2.2.6</scala.test.version>
+        <dbpedia.extraction.version>4.0</dbpedia.extraction.version>
         <lucene.core.version>3.6.2</lucene.core.version>
         <jersey.server.version>1.5</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
-        <lift.json.version>2.5-M3</lift.json.version>
+        <lift.json.version>2.6.2</lift.json.version>
         <logback.classic.version>1.0.9</logback.classic.version>
         <yars.nxparser.version>1.2.3</yars.nxparser.version>
     </properties>
@@ -119,14 +120,14 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
-            <version>${scala.compiler.version}</version>
+            <version>${scala.compiler.version.revision}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.compiler.version}</version>
+            <version>${scala.compiler.version.revision}</version>
         </dependency>
 
         <dependency>
