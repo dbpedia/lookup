@@ -1,0 +1,22 @@
+FROM java:8
+
+MAINTAINER  DBpedia Team <dbpedia-developers@lists.sourceforge.net>
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    maven \
+    git
+
+ADD dbpedia-lookup-index-3.8.tgz /opt
+
+RUN cd /opt && \
+    git clone git://github.com/dbpedia/lookup.git && \
+    cd lookup && \
+    mvn clean install && \
+    tar xzvf /opt/dbpedia-lookup-index-3.8.tgz
+
+RUN chmod +x /opt/lookup/run
+
+EXPOSE 1111
+
+    
