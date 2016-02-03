@@ -5,16 +5,16 @@ MAINTAINER  DBpedia Team <dbpedia-developers@lists.sourceforge.net>
 RUN apt-get update && apt-get install -y \
     curl
 
+ENV INDEX_URL  wifo5-04.informatik.uni-mannheim.de/downloads/
 ENV INDEX_FILENAME dbpedia-lookup-index-3.8.tgz
 
-ENV URL_RELEASE  https://6sp1fg.by3301.livefilestore.com/y3mx0qAqOv0UTE1zdyETUI1mIRQxfeZLI-FKDax66mlGl-qzLs835uPmH2ND02QljCAZctlHnjs8-dnr8tf3BoUF-VFoJEeuEek63tJcYLHu6H3Cg7vGnXc5HEbrYlSyWtzQmu8w1tf1_qdQfoAl1uLQA/dbpedia-lookup-3.1-jar-with-dependencies.jar
-
-ENV URL_LOOKUP_INDEX  https://58p1fg.by3301.livefilestore.com/y3merR9dO3inA59KF9xZD9cmray-c39oqZkOM8JGuLsb9ErxcPHDtm-WA3r5tUC0lafh69jdKbKSCdo6F3vgzB-hAYkQ5ioSghTuOYAwY0NOtc2fj8lTL0HA82B7m5m8DQ_GK3KLNI4KgnWH7T5eveI_Q/dbpedia-lookup-index-3.8.tgz
+ENV LOOKUP_JAR dbpedia-lookup-3.1-jar-with-dependencies.jar
+ENV LOOKUP_URL https://www.dropbox.com/s/u3o7e8uraeb2mpb/dbpedia-lookup-3.1-jar-with-dependencies.jar?dl=1
 
 RUN mkdir -p /opt/lookup && \
     cd /opt/lookup && \
-    curl -O "$URL_RELEASE" && \
-    curl -O "$URL_LOOKUP_INDEX" && \
+    curl -L -O  $LOOKUP_JAR "$LOOKUP_URL" && \
+    curl -O "http://$INDEX_URL/$INDEX_FILENAME" && \
     tar xvf $INDEX_FILENAME   && \
     rm  $INDEX_FILENAME
 
