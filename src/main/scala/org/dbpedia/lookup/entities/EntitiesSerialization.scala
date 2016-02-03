@@ -33,8 +33,9 @@ class ResultXmlSerializer extends ResultSerializer {
 
   def prettyPrint(results: Traversable[Result]) : String = {
     val xml = serialize(results)
-    val printer = new scala.xml.PrettyPrinter(120, 4)
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + printer.format(xml)
+  /*  val printer = new scala.xml.PrettyPrinter(120, 4)
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + printer.format(xml)*/
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + xml.toString()
   }
 
   def serialize(results : Traversable[Result]) : Node = {

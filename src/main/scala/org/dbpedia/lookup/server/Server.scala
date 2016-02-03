@@ -56,15 +56,6 @@ object Server extends Logging {
 
         logger.info("Server started in " + System.getProperty("user.dir") + " listening on " + baseUri)
 
-        //Open browser
-        try {
-            val example = new URI(baseUri + "api/search/KeywordSearch?QueryString=Berlin")
-            java.awt.Desktop.getDesktop.browse(example)
-        }
-        catch {
-            case e : Exception => logger.error("Could not open browser. ", e)
-        }
-
         while(running) {
             Thread.sleep(100)
         }
