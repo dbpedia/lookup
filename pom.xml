@@ -13,11 +13,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.scala.plugin.version>3.1.0</maven.scala.plugin.version>
+        <maven.scala.plugin.version>3.2.2</maven.scala.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <scala.compiler.version.revision>2.11.7</scala.compiler.version.revision>
         <scala.compiler.version>2.11</scala.compiler.version>
         <scala.test.version>2.2.6</scala.test.version>
+        <maven.scala.test.plugin.version>1.0</maven.scala.test.plugin.version>
         <dbpedia.extraction.version>4.0</dbpedia.extraction.version>
         <lucene.core.version>3.6.2</lucene.core.version>
         <jersey.server.version>1.5</jersey.server.version>
@@ -101,7 +102,8 @@
 
             <plugin>
                 <groupId>org.scalatest</groupId>
-                <artifactId>maven-scalatest-plugin</artifactId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>${maven.scala.test.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>test</id>
@@ -110,6 +112,29 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.dbpedia.lookup.server.Server</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
             </plugin>
 
         </plugins>
