@@ -3,20 +3,19 @@ FROM java:8
 MAINTAINER  DBpedia Team <dbpedia-developers@lists.sourceforge.net>
 
 RUN apt-get update && apt-get install -y \
-    curl \
-    maven \
-    git
+    curl
 
-ADD dbpedia-lookup-index-3.8.tgz /opt
+ENV INDEX_FILENAME dbpedia-lookup-index-3.8.tgz
 
-RUN cd /opt && \
-    git clone git://github.com/dbpedia/lookup.git && \
-    cd lookup && \
-    mvn clean install && \
-    tar xzvf /opt/dbpedia-lookup-index-3.8.tgz
+ENV URL_RELEASE  https://6sp1fg.by3301.livefilestore.com/y3mx0qAqOv0UTE1zdyETUI1mIRQxfeZLI-FKDax66mlGl-qzLs835uPmH2ND02QljCAZctlHnjs8-dnr8tf3BoUF-VFoJEeuEek63tJcYLHu6H3Cg7vGnXc5HEbrYlSyWtzQmu8w1tf1_qdQfoAl1uLQA/dbpedia-lookup-3.1-jar-with-dependencies.jar
 
-RUN chmod +x /opt/lookup/run
+ENV URL_LOOKUP_INDEX  https://58p1fg.by3301.livefilestore.com/y3merR9dO3inA59KF9xZD9cmray-c39oqZkOM8JGuLsb9ErxcPHDtm-WA3r5tUC0lafh69jdKbKSCdo6F3vgzB-hAYkQ5ioSghTuOYAwY0NOtc2fj8lTL0HA82B7m5m8DQ_GK3KLNI4KgnWH7T5eveI_Q/dbpedia-lookup-index-3.8.tgz
+
+RUN mkdir -p /opt/lookup && \
+    cd /opt/lookup && \
+    curl -O "$URL_RELEASE" && \
+    curl -O "$URL_LOOKUP_INDEX" && \
+    tar xvf $INDEX_FILENAME   && \
+    rm  $INDEX_FILENAME
 
 EXPOSE 1111
-
-    
