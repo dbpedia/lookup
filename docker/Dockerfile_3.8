@@ -9,11 +9,11 @@ ENV INDEX_URL  wifo5-04.informatik.uni-mannheim.de/downloads/
 ENV INDEX_FILENAME dbpedia-lookup-index-3.8.tgz
 
 ENV LOOKUP_JAR dbpedia-lookup-3.1-jar-with-dependencies.jar
-ENV LOOKUP_URL https://www.dropbox.com/s/u3o7e8uraeb2mpb/dbpedia-lookup-3.1-jar-with-dependencies.jar?dl=1
+ENV LOOKUP_URL oss.sonatype.org/content/groups/public/org/dbpedia/lookup/dbpedia-lookup/3.1/
 
 RUN mkdir -p /opt/lookup && \
     cd /opt/lookup && \
-    curl -L -O  $LOOKUP_JAR "$LOOKUP_URL" && \
+    curl -O "http://$LOOKUP_URL/$LOOKUP_JAR" && \
     curl -O "http://$INDEX_URL/$INDEX_FILENAME" && \
     tar xvf $INDEX_FILENAME   && \
     rm  $INDEX_FILENAME
