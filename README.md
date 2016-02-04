@@ -54,7 +54,7 @@ DBpedia Lookup depends on the core of the DBpedia extraction framework, which is
 
 ### Download and configure the index
 
-    wget http://spotlight.dbpedia.org/download/dbpedia-lookup-index-3.8.tgz
+    wget http://wifo5-04.informatik.uni-mannheim.de/downloads/dbpedia-lookup-index-3.8.tgz
     tar xzvf dbpedia-lookup-index-3.8.tgz
 
 ### Run the server
