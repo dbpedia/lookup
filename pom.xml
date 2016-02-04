@@ -10,6 +10,36 @@
     <version>3.1</version>
     <name>DBpedia Lookup Service</name>
 
+
+    <description>
+        DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords
+    </description>
+
+    <url>http://www.dbpedia.org</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>DBpedia Team</name>
+            <email>dbpedia-developers@lists.sourceforge.net</email>
+            <organization>DBpedia</organization>
+            <organizationUrl>http://www.dbpedia.org</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:dbpedia/extraction-framework.git</connection>
+        <developerConnection>scm:git:git@github.com:dbpedia/lookup.git</developerConnection>
+        <url>git@github.com:dbpedia/extraction-framework.git</url>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -26,6 +56,7 @@
         <lift.json.version>2.6.2</lift.json.version>
         <logback.classic.version>1.0.9</logback.classic.version>
         <yars.nxparser.version>1.2.3</yars.nxparser.version>
+        <aksw.keyname>AKSW.GPG</aksw.keyname>
     </properties>
 
     <build>
@@ -72,6 +103,13 @@
                         </goals>
                         <phase>test-compile</phase>
                     </execution>
+                    <execution>
+                        <id>attach-docs-sources</id>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>doc-jar</goal>
+                        </goals>
+                   </execution>
                 </executions>
 
                 <configuration>
@@ -135,6 +173,30 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -234,5 +296,46 @@
             <url>https://oss.sonatype.org/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <keyname>AKSW</keyname>
+                                    <passphraseServerId>${aksw.keyname}</passphraseServerId>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.2</version>
+                        <configuration>
+                            <goals>deploy</goals>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <releaseProfiles>release</releaseProfiles>
+                            <tagNameFormat>v@{project.version}</tagNameFormat>
+                            <scmCommentPrefix>[maven-release-plugin] [ci build-cli] [ci build-webdemo] -</scmCommentPrefix>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
