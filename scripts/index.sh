@@ -83,4 +83,4 @@ mvn clean install
 ./run Indexer $DBPEDIA_ROOT/$DBPEDIA_INDEX $DBPEDIA_DATA/$LANG_i18n/redirects_$LANG_i18n.nt $DBPEDIA_DATA/$LANG_i18n/all_dbpedia_data.nt
 
 cd $DBPEDIA_ROOT
-tar -zcvf $LANG_i18n_$DBPEDIA_VERSION.tar.gz $DBPEDIA_INDEX
+tar -zcvf ${LANG_i18n}_$DBPEDIA_VERSION.tar.gz $DBPEDIA_INDEX
