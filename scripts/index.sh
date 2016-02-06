@@ -3,8 +3,9 @@
 readonly DBPEDIA_VERSION=$1
 readonly LANG_i18n=$2
 readonly DBPEDIA_DOWNLOADS="http://downloads.dbpedia.org"/$DBPEDIA_VERSION
-readonly DBPEDIA_DATA=~/lookup/dbpedia_data/$DBPEDIA_VERSION
-readonly DBPEDIA_INDEX=~/lookup/dbpedia-lookup-index/$LANG_i18n/$DBPEDIA_VERSION
+readonly DBPEDIA_ROOT=~/lookup
+readonly DBPEDIA_DATA=$DBPEDIA_ROOT/dbpedia_data/$DBPEDIA_VERSION
+readonly DBPEDIA_INDEX=dbpedia-lookup-index/$LANG_i18n/$DBPEDIA_VERSION
 readonly ALL_FILES=(redirects short_abstracts instance_types article_categories)
 
 #+------------------------------------------------------------------------------------------------------------------------------+
@@ -61,7 +62,7 @@ function download_file()
 
 #-----------------------------------------------------------------------------------------------------------------------------+
 create_dir $DBPEDIA_DATA
-create_dir $DBPEDIA_INDEX
+create_dir $DBPEDIA_ROOT/$DBPEDIA_INDEX
 
 for i in ${ALL_FILES[@]}
 do
@@ -79,4 +80,7 @@ git clone https://github.com/dbpedia/lookup.git
 cd lookup
 mvn clean install
 
-./run Indexer $DBPEDIA_INDEX $DBPEDIA_DATA/$LANG_i18n/redirects_$LANG_i18n.nt $DBPEDIA_DATA/$LANG_i18n/all_dbpedia_data.nt
+./run Indexer $DBPEDIA_ROOT/$DBPEDIA_INDEX $DBPEDIA_DATA/$LANG_i18n/redirects_$LANG_i18n.nt $DBPEDIA_DATA/$LANG_i18n/all_dbpedia_data.nt
+
+cd $DBPEDIA_ROOT
+tar -zcvf $LANG_i18n_$DBPEDIA_VERSION.tar.gz $DBPEDIA_INDEX
