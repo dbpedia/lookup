@@ -1,8 +1,8 @@
 #!/bin/bash
 
-readonly DBPEDIA_VERSION=3.9
+readonly DBPEDIA_VERSION=$1
+readonly LANG_i18n=$2
 readonly DBPEDIA_DOWNLOADS="http://downloads.dbpedia.org"/$DBPEDIA_VERSION
-readonly LANG_i18n=en
 readonly DBPEDIA_DATA=~/lookup/dbpedia_data/$DBPEDIA_VERSION
 readonly DBPEDIA_INDEX=~/lookup/dbpedia-lookup-index/$LANG_i18n/$DBPEDIA_VERSION
 readonly ALL_FILES=(redirects short_abstracts instance_types article_categories)
