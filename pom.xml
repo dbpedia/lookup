@@ -130,7 +130,8 @@
                             <id>Indexer</id>
                             <mainClass>org.dbpedia.lookup.lucene.Indexer</mainClass>
                             <jvmArgs>
-                                <jvmArg>-Xmx2g</jvmArg>
+                                <jvmArg>-Xms5g</jvmArg>
+                                <jvmArg>-Xmx5g</jvmArg>
                                 <jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
                             </jvmArgs>
                         </launcher>
