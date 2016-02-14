@@ -13,8 +13,8 @@ ENV LOOKUP_URL oss.sonatype.org/content/groups/public/org/dbpedia/lookup/dbpedia
 
 RUN mkdir -p /opt/lookup && \
     cd /opt/lookup && \
-    curl -O "http://$LOOKUP_URL/$LOOKUP_JAR" && \
-    curl -O "http://$INDEX_URL/$INDEX_FILENAME" && \
+    wget "http://$LOOKUP_URL/$LOOKUP_JAR" && \
+    wget "http://$INDEX_URL/$INDEX_FILENAME" && \
     tar xvf $INDEX_FILENAME   && \
     rm  $INDEX_FILENAME
 
