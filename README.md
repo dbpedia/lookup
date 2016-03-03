@@ -54,7 +54,7 @@ DBpedia Lookup depends on the core of the DBpedia extraction framework, which is
 
 ### Download and configure the index
 
-    You can get our indexes from [SourceForge](https://sourceforge.net/projects/dbpedia-lookup/files/index/)
+You can get our indexes from [SourceForge](https://sourceforge.net/projects/dbpedia-lookup/files/index/)
 
 ### Run the server
 
