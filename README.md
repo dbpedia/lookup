@@ -54,12 +54,30 @@ DBpedia Lookup depends on the core of the DBpedia extraction framework, which is
 
 ### Download and configure the index
 
-    wget http://wifo5-04.informatik.uni-mannheim.de/downloads/dbpedia-lookup-index-3.8.tgz
-    tar xzvf dbpedia-lookup-index-3.8.tgz
+    You can get our indexes from [SourceForge](https://sourceforge.net/projects/dbpedia-lookup/files/index/)
 
 ### Run the server
 
-    ./run Server dbpedia-lookup-index-3.8
+    
+    `./run Server dbpedia-lookup-index/[LANGUAGE]/[VERSION]/core-i18n`
+   
+   E.g:
+    
+    `./run Server dbpedia-lookup-index/current/en/core-i18n`
+    
+    
+#### Available versions: 
+    
+* current - from Latest DBpedia Dump
+
+Archive: 2015-04, 3.9 and 3.8 
+    
+    
+#### Available languages (i18n working in progress): 
+    
+* en - English
+    
+    
 
 The server should now be running at http://localhost:1111
 
