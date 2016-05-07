@@ -133,6 +133,4 @@ The [DBpedia wiki](http://wiki.dbpedia.org/lookup/) also has useful information 
 ## Maintainers
 
 * Pablo Mendes [@pablomendes](https://github.com/pablomendes)
-* Max Jakob [@maxjakob](https://github.com/maxjakob)
 * Matt Haynes [@matth](https://github.com/matth)
-
