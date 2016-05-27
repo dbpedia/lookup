@@ -88,7 +88,7 @@ Rebuilding an index is usually not required, if you only intend on running a loc
 To re-build the index you will require
 
 * DBpedia datasets
-* pignlproc output from [nerd-stats.pig](https://github.com/dbpedia-spotlight/pignlproc/blob/master/examples/nerd-stats/nerd-stats.pig)
+* [Wikistatsextractor output](http://spotlight.sztaki.hu/downloads/latest_data/) - [wikistatsextractor](https://github.com/dbpedia-spotlight/wikistatsextractor) is  based on [pignlproc](https://github.com/dbpedia-spotlight/pignlproc)
 * Unix
 
 
