@@ -276,10 +276,9 @@
 
     <repositories>
 
-        <repository>
-            <id>nxparser-repo</id>
-            <name>NxParser Maven repo</name>
-            <url>http://nxparser.googlecode.com/svn/repository</url>
+       <repository>
+            <id>spotlight-releases-repository</id>
+            <url>https://github.com/dbpedia-spotlight/maven-repo/raw/master/releases</url>
         </repository>
 
         <repository>
