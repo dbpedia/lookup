@@ -7,7 +7,7 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import java.io.{FileInputStream, InputStream, File}
 import org.semanticweb.yars.nx.parser.NxParser
 import org.dbpedia.extraction.util.WikiUtil
-import org.dbpedia.lookup.inputformat.{InputFormat, DBpediaNTriplesInputFormat, PignlprocTSVInputFormat}
+import org.dbpedia.lookup.inputformat.{WikiStatsExtractor, InputFormat, DBpediaNTriplesInputFormat, PignlprocTSVInputFormat}
 import org.apache.lucene.search.{IndexSearcher, TermQuery}
 import org.dbpedia.lookup.util.Logging
 
@@ -161,6 +161,8 @@ object Indexer extends Logging {
             logger.debug("using PignlprocTSVInputFormat")
             val refCountField = if (fileName.contains("_alx")) 7 else 6
             new PignlprocTSVInputFormat(inputStream, pSfGivenUriThreshold, refCountField=refCountField)
+        } else if (fileName.contains("pairCounts")) {
+            new WikiStatsExtractor(inputStream, pSfGivenUriThreshold)
         }
         else {
             throw new IllegalArgumentException("only know how to handle file types .nt, .nq and .tsv")
