@@ -120,9 +120,9 @@ The indexer has to be run twice:
 
         ./run Indexer lookup_index_dir redirects_en.nt all_dbpedia_data.nt
 
-2. with the pignlproc data
+2. with the wikistatsextractor data
 
-        ./run Indexer lookup_index_dir redirects_en.nt nerd_stats_output.tsv
+        ./run Indexer lookup_index_dir redirects_en.nt pairCounts
 
 ## Support and feedback
 
