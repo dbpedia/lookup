@@ -7,7 +7,6 @@ import org.dbpedia.lookup.lucene.LuceneConfig
 
 import scala.io.Source
 
-
 class WikiStatsExtractor(dataSet: InputStream, pSfGivenUriThreshold: Double) extends InputFormat {
 
   private val it = Source.fromInputStream(dataSet, "utf-8").getLines()
@@ -17,14 +16,22 @@ class WikiStatsExtractor(dataSet: InputStream, pSfGivenUriThreshold: Double) ext
     while(it.hasNext) {
       val elements = it.next().split("\t")
 
-      val uri = WikiUtil.wikiEncode(elements(1))
-      val sf = elements(0)
+      if (elements.size >= 3) {
+        val uri = WikiUtil.wikiEncode(elements(1))
+        val sf = elements(0)
 
-      val uriCount = elements(2)
+        val uriCount = elements(2)
 
-      f( (uri, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, sf) )
-      f( (uri, LuceneConfig.Fields.REFCOUNT, uriCount) )
+        f((uri, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, sf))
+        f((uri, LuceneConfig.Fields.REFCOUNT, uriCount))
+      } 
+      
     }
+    
+  }
+  
+}
+
 
   }
 }
