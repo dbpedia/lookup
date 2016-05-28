@@ -25,13 +25,7 @@ class WikiStatsExtractor(dataSet: InputStream, pSfGivenUriThreshold: Double) ext
         f((uri, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, sf))
         f((uri, LuceneConfig.Fields.REFCOUNT, uriCount))
       } 
-      
     }
-    
-  }
-  
-}
-
-
   }
 }
+
