@@ -54,16 +54,16 @@ DBpedia Lookup depends on the core of the DBpedia extraction framework, which is
 
 ### Download and configure the index
 
-You can get our indexes from [SourceForge](https://sourceforge.net/projects/dbpedia-lookup/files/index/)
+You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2jb/AAAY8_DTZj-Y7Mku29oVhiDla?dl=0)
 
 ### Run the server
 
     
-    `./run Server dbpedia-lookup-index/[LANGUAGE]/[VERSION]/core-i18n`
+    `./run Server [PATH TO THE INDEX]/[VERSION]/`
    
    E.g:
     
-    `./run Server dbpedia-lookup-index/current/en/core-i18n`
+    `./run Server /opt/dbpedia-lookup/2015-04`
     
     
 #### Available versions: 
