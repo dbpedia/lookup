@@ -51,7 +51,7 @@
         <maven.scala.test.plugin.version>1.0</maven.scala.test.plugin.version>
         <dbpedia.extraction.version>4.0</dbpedia.extraction.version>
         <lucene.core.version>3.6.2</lucene.core.version>
-        <jersey.server.version>1.5</jersey.server.version>
+        <jersey.server.version>1.19.1</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
         <lift.json.version>2.6.2</lift.json.version>
         <logback.classic.version>1.0.9</logback.classic.version>
@@ -231,15 +231,8 @@
 
         <dependency>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
+            <artifactId>jersey-bundle</artifactId>
             <version>${jersey.server.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>${jersey.server.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
