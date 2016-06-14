@@ -56,7 +56,8 @@ You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2j
    E.g:
     
     `./run Server /opt/dbpedia-lookup/2015-04`
-    
+
+**Note: The index file must be decompressed**
     
 #### Available versions: 
     
