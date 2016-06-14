@@ -38,14 +38,6 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ## Running a local mirror of the webservice
 
-### Clone and build the DBpedia extraction framework
-DBpedia Lookup depends on the core of the DBpedia extraction framework, which is not available in a public Maven repo at the moment. Java 7 is required to compile it.
-    
-    git clone git://github.com/dbpedia/extraction-framework.git
-    cd extraction-framework
-    git checkout DBpedia_3.8
-    mvn clean install
-
 ### Clone and build DBpedia Lookup
 
     git clone git://github.com/dbpedia/lookup.git
