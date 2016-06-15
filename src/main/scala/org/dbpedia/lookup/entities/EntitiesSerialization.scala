@@ -42,10 +42,12 @@ class ResultJsonLDSerializer extends ResultSerializer {
       "\"categories\": \"dbpedia.org/property/categories\"," + 
       "\"templates\": \"dbpedia.org/property/latemplatesbel\"," + 
       "\"redirects	\": \"dbpedia.org/ontology/wikiPageRedirects\"," + 
-      "}," */
-      
-      var  jsonld =("@context"->    ("vocab"-> "c")~
-        ("@uri"-> "dbpedia.org/property/description")~
+      "},"
+      ("vocab"-> "c")~
+        ("@uri"-> "dbpedia.org/property/description")~ 
+      * */
+            
+      var  jsonld =("@context"->    
         ("@description"-> "dbpedia.org/property/description")~
         ("@refCount"-> "dbpedia.org/property/categories")~
         ("@templates"-> "dbpedia.org/property/templates")~
