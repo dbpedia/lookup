@@ -11,7 +11,7 @@ import org.dbpedia.lookup.util.Logging
  * Controller for DBpedia Lookup web service.
  */
 @Path("/api/search{ext:(.asmx)?}")
-@Produces(Array("application/xml", "application/json", "application/json-ld"))
+@Produces(Array("application/xml", "application/json", "application/json+ld"))
 class LookupResource extends Logging {
 
     @Context
