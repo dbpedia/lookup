@@ -28,6 +28,36 @@ class ResultJsonSerializer extends ResultSerializer {
   }
 
 }
+class ResultJsonLDSerializer extends ResultSerializer {
+
+  def prettyPrint(results: Traversable[Result]) : String = {
+
+    import net.liftweb.json.JsonDSL._
+ var jsonld = " { \n" + "\"@context\": {\n" + "\"@vocab\": \" \"," + 
+      "\"uri\": \"goog:resultScore\",\n" + 
+      "\"description\": \"dbpedia.org/property/description\",\n" + 
+      "\"refCount\": \"dbpedia.org/property/label\",\n" + 
+      "\"classes\": \"dbpedia.org/ontology/class\",\n" + 
+      "\"categories\": \"dbpedia.org/property/categories\",\n" + 
+      "\"templates\": \"dbpedia.org/property/latemplatesbel\",\n" + 
+      "\"redirects	\": \"dbpedia.org/ontology/wikiPageRedirects\",\n" + 
+      "}," + 
+      "\"@type\": \"ItemList\",;\n" + 
+      "\"itemListElement\": [\n{\n" +("\"itemListElement\": [\n{\n" -> results.map { result =>
+      ("uri" -> result.uri) ~
+      ("label" -> result.label) ~
+      ("description" -> result.description) ~
+      ("refCount" -> result.refCount) ~
+      ("classes" -> result.classes.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
+      ("categories" -> result.categories.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
+      ("templates" -> result.templates.map(c => ("uri" -> c.uri))) ~
+      ("redirects" -> result.redirects.map(c => ("uri" -> c.uri)))
+    })
+
+    pretty(render(jsonld))
+  }
+
+}
 
 class ResultXmlSerializer extends ResultSerializer {
 

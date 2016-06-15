@@ -6,3 +6,4 @@ syntax: glob
 *.iws
 target/*
 
+/target/

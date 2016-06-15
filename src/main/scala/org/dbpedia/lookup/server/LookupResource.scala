@@ -11,7 +11,7 @@ import org.dbpedia.lookup.util.Logging
  * Controller for DBpedia Lookup web service.
  */
 @Path("/api/search{ext:(.asmx)?}")
-@Produces(Array("application/xml", "application/json"))
+@Produces(Array("application/xml", "application/json", "application/json-ld"))
 class LookupResource extends Logging {
 
     @Context
@@ -51,10 +51,12 @@ class LookupResource extends Logging {
     }
 
     private def serialize(results: List[Result]): String = {
-        val serializer = (accept contains "application/json") match {
-            case true  => new ResultJsonSerializer
+        val serializer = (accept) match {
+            case "application/json"  => new ResultJsonSerializer
+            case "application/json-ld"  => new ResultJsonLDSerializer
             case _     => new ResultXmlSerializer
         }
+        
         serializer.prettyPrint(results)
     }
 
