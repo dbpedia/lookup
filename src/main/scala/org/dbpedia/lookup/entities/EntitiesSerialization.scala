@@ -34,20 +34,24 @@ class ResultJsonLDSerializer extends ResultSerializer {
 
     import net.liftweb.json.JsonDSL._
  
- var context = " { \n" + "\"@context\": {\n" + "\"@vocab\": \" \"," + 
-      "\"uri\": \"goog:resultScore\",\n" + 
-      "\"description\": \"dbpedia.org/property/description\",\n" + 
-      "\"refCount\": \"dbpedia.org/property/label\",\n" + 
-      "\"classes\": \"dbpedia.org/ontology/class\",\n" + 
-      "\"categories\": \"dbpedia.org/property/categories\",\n" + 
-      "\"templates\": \"dbpedia.org/property/latemplatesbel\",\n" + 
-      "\"redirects	\": \"dbpedia.org/ontology/wikiPageRedirects\",\n" + 
-      "}," + 
-      "\"@type\": \"ItemList\",;\n" + 
-      "\"itemListElement\": [\n{\n" 
-
-      var  jsonld =("context"->context)~
-          ("results" -> results.map { result =>
+   /*  var context = " { " + "\"@context\": {" + "\"@vocab\": \" \"," + 
+      "\"uri\": \"goog:resultScore\"," + 
+      "\"description\": \"dbpedia.org/property/description\"," + 
+      "\"refCount\": \"dbpedia.org/property/label\"," + 
+      "\"classes\": \"dbpedia.org/ontology/class\"," + 
+      "\"categories\": \"dbpedia.org/property/categories\"," + 
+      "\"templates\": \"dbpedia.org/property/latemplatesbel\"," + 
+      "\"redirects	\": \"dbpedia.org/ontology/wikiPageRedirects\"," + 
+      "}," */
+      
+      var  jsonld =("@context"->    ("vocab"-> "c")~
+        ("@uri"-> "dbpedia.org/property/description")~
+        ("@description"-> "dbpedia.org/property/description")~
+        ("@refCount"-> "dbpedia.org/property/categories")~
+        ("@templates"-> "dbpedia.org/property/templates")~
+        ("@redirects"-> "dbpedia.org/ontology/wikiPageRedirects")
+      )~
+      ("results" -> results.map { result =>
       ("uri" -> result.uri) ~
       ("label" -> result.label) ~
       ("description" -> result.description) ~
