@@ -26,6 +26,7 @@ class Server(port: Int, searcher: Searcher) {
         val config = new ClassNamesResourceConfig(classOf[LookupResource])
         config.getSingletons.add(new SearcherProvider(searcher))
         config
+        
     }
 
     val serverUri = new URI("http://localhost:" + port.toString + "/")

@@ -9,9 +9,12 @@ import org.dbpedia.lookup.util.Logging
 
 /**
  * Controller for DBpedia Lookup web service.
+
  */
+@Controller
 @Path("/api/search{ext:(.asmx)?}")
 @Produces(Array("application/xml", "application/json", "application/json+ld"))
+@Api(value="/api/search{ext:(.asmx)?}", description = "Endpoint to Search with Label")
 class LookupResource extends Logging {
 
     @Context
@@ -31,6 +34,11 @@ class LookupResource extends Logging {
 
     @GET
     @Path("/KeywordSearch")
+    @ApiOperation(value = "Gets a list of  resource.", response = List[Result] )
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Keyword Found!!"),
+	    @ApiResponse(code = 404, message = " Keyword resource not found")
+	})
     def keywordSearch : Response = {
         val results = searcher.keywordSearch(query, ontologyClass, maxHits)
         logger.info("KeywordSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
@@ -39,6 +47,11 @@ class LookupResource extends Logging {
 
     @GET
     @Path("/PrefixSearch")
+      @ApiOperation(value = "Gets a list of  resource.", response = List[Result])
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Keyword Found!!")
+	    @ApiResponse(code = 404, message = " Keyword resource not found")
+	})
     def prefixSearch : Response = {
         val results = searcher.prefixSearch(query, ontologyClass, maxHits)
         logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
