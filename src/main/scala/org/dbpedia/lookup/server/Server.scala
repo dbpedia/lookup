@@ -8,6 +8,7 @@ import java.net.URI
 import org.dbpedia.lookup.lucene.Searcher
 import java.io.File
 import org.dbpedia.lookup.util.Logging
+import io.swagger.jaxrs.config.BeanConfig
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,12 +22,15 @@ class SearcherProvider(searcher: Searcher)
     extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
 
 class Server(port: Int, searcher: Searcher) {
-
     val resources = {
-        val config = new ClassNamesResourceConfig(classOf[LookupResource])
+        val config = new ClassNamesResourceConfig(
+          classOf[LookupResource]
+        // classOf[io.swagger.jaxrs.listing.ApiListingResource],
+        // classOf[io.swagger.jaxrs.listing.SwaggerSerializers]
+        )
         config.getSingletons.add(new SearcherProvider(searcher))
         config
-        
+
     }
 
     val serverUri = new URI("http://localhost:" + port.toString + "/")

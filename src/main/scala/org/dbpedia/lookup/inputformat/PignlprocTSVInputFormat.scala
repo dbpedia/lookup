@@ -2,7 +2,7 @@ package org.dbpedia.lookup.inputformat
 
 import java.io.InputStream
 import org.dbpedia.lookup.lucene.LuceneConfig
-import io.Source
+import scala.io.Source
 import org.dbpedia.extraction.util.WikiUtil
 
 /**
