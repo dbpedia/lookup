@@ -34,18 +34,7 @@ class ResultJsonLDSerializer extends ResultSerializer {
 
     import net.liftweb.json.JsonDSL._
  
-   /*  var context = " { " + "\"@context\": {" + "\"@vocab\": \" \"," + 
-      "\"uri\": \"goog:resultScore\"," + 
-      "\"description\": \"dbpedia.org/property/description\"," + 
-      "\"refCount\": \"dbpedia.org/property/label\"," + 
-      "\"classes\": \"dbpedia.org/ontology/class\"," + 
-      "\"categories\": \"dbpedia.org/property/categories\"," + 
-      "\"templates\": \"dbpedia.org/property/latemplatesbel\"," + 
-      "\"redirects	\": \"dbpedia.org/ontology/wikiPageRedirects\"," + 
-      "},"
-      ("vocab"-> "c")~
-        ("@uri"-> "dbpedia.org/property/description")~ 
-      * */
+
             
       var  jsonld =("@context"->    
         ("@description"-> "dbpedia.org/property/description")~

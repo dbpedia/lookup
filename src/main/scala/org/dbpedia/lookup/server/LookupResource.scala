@@ -47,11 +47,6 @@ class LookupResource extends Logging {
 
     @GET
     @Path("/PrefixSearch")
-    @ApiOperation(value = "Gets a list of  resource.")//, response = classOf[Result], responseContainer = "list")
-    @ApiResponses(Array(
-        new ApiResponse(code = 200, message = "Keyword Found!!"),
-        new ApiResponse(code = 404, message = " Keyword resource not found")
-    ))
     def prefixSearch : Response = {
         val results = searcher.prefixSearch(query, ontologyClass, maxHits)
         logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)

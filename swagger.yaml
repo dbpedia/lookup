@@ -1,0 +1,200 @@
+#Author: Kunal 
+swagger: '2.0'
+info:
+  title: DBpedia Lookup
+  version: '1.0'
+  
+  description: DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords. Related means that either the label of a resource matches, or an anchor text that was frequently used in Wikipedia to refer to a specific resource matches (for example the resource http://dbpedia.org/resource/United_States can be looked up by the string "USA"). The results are ranked by the number of inlinks pointing from other Wikipedia pages at a result page.
+ 
+host: lookup.dbpedia.org
+basePath: /api/search.asmx
+schemes:
+  - http
+consumes:
+  - application/json
+  - application/xml
+produces:
+  - application/json
+  - application/xml
+  - application/json+ld
+paths:
+  /KeywordSearch:
+    get:
+      description: The Keyword Search API can be used to find related DBpedia resources for a given string. The string may consist of a single or multiple words. Example, http://lookup.dbpedia.org/api/search/KeywordSearch?QueryClass=place&QueryString=berlin
+      operationId: keySearch
+      parameters:
+        - name: QueryString
+          in: query
+          description: a string (list of word(s)) which acts as a label for the query to be found.
+          required: true
+          type: string
+        - name: QueryClass 
+          in: query
+          description:  a DBpedia class from the Ontology that the results should have .
+          required: false
+          type: string
+        - name: maxHits
+          in: query
+          description: Default is 5. The number of results returned of the query fired.
+          default: 5
+          required: false
+          type: integer
+      tags:
+        - Keyword
+      responses:
+        '200':
+          description: Result is returned in JSON-LD format.
+          schema:
+            $ref: '#/definitions/ResultJsonLDSerializer'
+        '400':
+          description: Result is returned in JSON format.
+          schema:
+            $ref: '#/definitions/ResultJsonSerializer'
+        '300':
+          description: Result is not Found in DBpedia
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Result is returned in XML format.
+          schema:
+            $ref: '#/definitions/ResultXmlSerializer'
+  /PrefixSearch:
+    get:
+      description: The PrefixSearch API can be used to implement autocomplete input boxes. For a given partial keyword like berl the API returns URIs of related DBpedia resources like http://dbpedia.org/resource/Berlin.Example, http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
+      operationId: autocompleteSearch
+      parameters:
+        - name: QueryString
+          in: query
+          description: a string (list of word(s)) which acts as a label for the query to be found.
+          required: true
+          type: string
+        - name: QueryClass 
+          in: query
+          description:  a DBpedia class from the Ontology that the results should have .
+          required: false
+          type: string
+        - name: maxHits
+          in: query
+          description: Default is 5. The number of results returned of the query fired.
+          default: 5
+          required: false
+          type: integer
+      tags:
+        - Autocomplete/Prefix
+      responses:
+        '200':
+          description: Result is returned in JSON-LD format.
+          schema:
+            $ref: '#/definitions/ResultJsonLDSerializer'
+        '400':
+          description: Result is returned in JSON format.
+          schema:
+            $ref: '#/definitions/ResultJsonSerializer'
+        '300':
+          description: Result is not Found in DBpedia
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Result is returned in XML format.
+          schema:
+            $ref: '#/definitions/ResultXmlSerializer'
+      
+        
+definitions:
+  Uri:
+    type: object
+    description: Class for URI
+    properties:
+      uri:
+        type: string
+  Label:
+    type: object
+    description: Class for Label
+    properties:
+      label:
+        type: string
+  OntologyClass:
+    type: object
+    description: Ontology Class Definition.
+    properties:
+      uri:
+        $ref: '#/definitions/Uri'
+      label:
+        $ref: '#/definitions/Label'  
+  Category:
+    type: object
+    description: <TODO>
+    properties:
+      uri:
+        $ref: '#/definitions/Uri'
+      label:
+        $ref: '#/definitions/Label' 
+  Template:
+    type: object
+    description: <TODO>
+    properties:
+      uri:
+        $ref: '#/definitions/Uri'
+  Redirect:
+    type: object
+    description: Handles the redirection of the resource's URI.
+    properties:
+      uri:
+        $ref: '#/definitions/Uri'
+  Result:
+    type: object
+    description: The result of the query has the following properties. These properties are serialised to display in various formats. 
+    properties:
+      uri:
+        $ref: '#/definitions/Uri'
+      description:
+        type: string
+      classes:
+       type: array
+       items:
+        $ref: '#/definitions/OntologyClass'
+      categories:
+       type: array
+       items:
+        $ref: '#/definitions/Category'
+      templates: 
+       type: array
+       items:
+        $ref: '#/definitions/Template'
+      redirects: 
+        type: array
+        items:
+          $ref: '#/definitions/Redirect'
+      refCount: 
+        type: integer
+
+            
+  ResultJsonLDSerializer:
+    type: object
+    description: The serializer will parse the Result to Json+LD format when the document accepts the Header "Application/json+ld"
+    properties:
+      Result: 
+        $ref: '#/definitions/Result'
+  ResultJsonSerializer:
+    type: object
+    description: The serializer will parse the Result to Json format when the document accepts the Header "Application/json"
+    properties:
+      Result: 
+        $ref: '#/definitions/Result'
+        
+  ResultXmlSerializer:
+    type: object
+    description: The serializer will parse the Result to XML format. DEFAULT
+    properties:
+      Result: 
+        $ref: '#/definitions/Result'
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string        
