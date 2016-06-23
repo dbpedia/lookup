@@ -17,6 +17,7 @@ before_install:
 branches:
   only:
     - master
+    - V2_improvements
 install: /bin/true
 script: "mvn clean install"
 notifications:
