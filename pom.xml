@@ -104,7 +104,8 @@
 					</execution>
 				</executions>
 				<dependencies>
-					<!-- Adding dependency to swagger-hibernate-validations to enable the BeanValidator as a custom model converter -->
+					<!-- Adding dependency to swagger-hibernate-validations to enable the 
+						BeanValidator as a custom model converter -->
 					<dependency>
 						<groupId>io.swagger</groupId>
 						<artifactId>swagger-hibernate-validations</artifactId>
@@ -364,6 +365,25 @@
 								<configuration>
 									<keyname>AKSW</keyname>
 									<passphraseServerId>${aksw.keyname}</passphraseServerId>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>io.swagger</groupId>
+						<artifactId>swagger-codegen-maven-plugin</artifactId>
+						<version>2.1.5-SNAPSHOT</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<inputSpec>src/main/resources/api.yaml</inputSpec>
+									<language>java</language>
+									<configOptions>
+										<sourceFolder>src/gen/java/main</sourceFolder>
+									</configOptions>
 								</configuration>
 							</execution>
 						</executions>
