@@ -16,8 +16,7 @@ before_install:
 script: bash ./deploy.sh
 env:
   global:
-  - ENCRYPTION_LABEL: 5ebd09854806
-  - secure: 44c3b82ac044784d0b22e62ceb01caaa1bfb6835
+  - ENCRYPTION_LABEL: 44c3b82ac044784d0b22e62ceb01caaa1bfb6835
 branches:
   only:
     - master
