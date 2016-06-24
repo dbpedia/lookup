@@ -4,7 +4,7 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-
+script: bash deploy.sh
 # Workaround for https://github.com/travis-ci/travis-ci/issues/5227
 # Buffer overflow in Java_java_net_Inet4AddressImpl_getLocalHostName
 before_install:
@@ -13,7 +13,10 @@ before_install:
   - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
   - cat /etc/hosts # optionally check the content *after*
 
-
+env:
+  global:
+  - GH_REF: github.com/<username>/<repository>.git
+  - secure: 44c3b82ac044784d0b22e62ceb01caaa1bfb6835
 branches:
   only:
     - master

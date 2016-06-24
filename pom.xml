@@ -214,8 +214,8 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<!-- specify the swagger yaml -->
-							<inputSpec>swagger.yaml</inputSpec>
+							<!-- specify the swagger yaml/json -->
+							<inputSpec>swagger.json</inputSpec>
 
 							<!-- target to generate -->
 							<language>html</language>
