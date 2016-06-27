@@ -225,7 +225,7 @@
 								<dateLibrary>java8</dateLibrary>
 							</configOptions> -->
 
-							<output>target/generatedswaggerdoc</output>
+							<output>target/generatedSwaggerDocument</output>
 						</configuration>
 					</execution>
 				</executions>
