@@ -34,7 +34,7 @@ The query parameters accepted by the endpoints are
 
 ### JSON support
 
-By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header.
+By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header. JSON-LD output can also be obtained `Accept: application/json+ld` 
 
 ## Running a local mirror of the webservice
 
@@ -73,6 +73,9 @@ Archive: 2015-04, 3.9 and 3.8
     
 
 The server should now be running at http://localhost:1111
+## Updating the Documentation
+
+The documentation is controlled with the swagger.json file. Once this file is updated along with the code, re building the whole project would result in generation of static html pages in target/generatedSwaggerDocument folder.
 
 ## Rebuilding the index
 
