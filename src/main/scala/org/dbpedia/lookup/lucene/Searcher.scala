@@ -1,30 +1,53 @@
 package org.dbpedia.lookup.lucene
 
-import java.io.File
+import java.io.{ FileInputStream, InputStream, File }
+import java.util.Properties;
 import org.apache.lucene.store.FSDirectory
 import org.apache.lucene.search._
-import org.apache.lucene.index.{Term, IndexReader}
+import org.apache.lucene.search.Query
+import org.apache.lucene.index.{ Term, IndexReader }
 import org.dbpedia.extraction.util.WikiUtil
 import org.dbpedia.lookup.entities._
 import org.apache.lucene.queryParser.QueryParser
 
-/**
- * Created by IntelliJ IDEA.
- * User: Max Jakob
- * Date: 14.01.11
- * Time: 14:43
- * Class to query the Lucene index for the best URI given a surface form.
- */
+class Searcher(val indexbaseDir: File) {
 
-class Searcher(val indexDir: File) {
+  private var indexReader: IndexReader = null
 
-    private val indexReader = IndexReader.open(FSDirectory.open(indexDir))
-    private val indexSearcher = new IndexSearcher(indexReader)
-    private val sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
-    private val queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD, LuceneConfig.analyzer)
+  private var indexSearcher: IndexSearcher = null
 
+  private var sort: Sort = null
 
-    def keywordSearch(keyword: String, ontologyClass: String="", maxResults: Int=5): List[Result] = {
+  private var queryParser: QueryParser = null
+  val prop = new Properties()
+  prop.load(new FileInputStream("src/main/resources/config/dbpedia.properties"))
+
+  def defineSearchLanguage(lang: String) =
+    {
+      val languageFolder = lang match {
+
+        case "en" => prop.getProperty("index_en")
+        case "de" => prop.getProperty("index_de")
+        case "es" => prop.getProperty("index_es")
+        case "ja" => prop.getProperty("index_ja")
+        case "nl" => prop.getProperty("index_nl")
+        case "fr" => prop.getProperty("index_fr")
+        case "pt" => prop.getProperty("index_pt")
+        case "ru" => prop.getProperty("index_ru")
+        case _ => prop.getProperty("index_en")
+
+      }
+      val langIndexDir= indexbaseDir.getPath()+"/"+languageFolder
+      indexReader = IndexReader.open(FSDirectory.open(new File(langIndexDir)))
+      if (indexReader != null) {
+        indexSearcher = new IndexSearcher(indexReader)
+        sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
+        queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD,
+          LuceneConfig.analyzer)
+      }
+    }
+
+  def keywordSearch(keyword: String, ontologyClass: String="", maxResults: Int=5): List[Result] = {
         if(keyword == null || keyword.isEmpty) {
             return List.empty
         }
@@ -130,5 +153,6 @@ class Searcher(val indexDir: File) {
 
         new Result(uri, description, ontologyClasses, categories, templates, redirects, refCount)
     }
+
 
 }

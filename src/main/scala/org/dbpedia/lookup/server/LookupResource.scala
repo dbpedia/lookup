@@ -14,7 +14,6 @@ import io.swagger.annotations._
  */
 @Path("/api/search{ext:(.asmx)?}")
 @Produces(Array("application/xml", "application/json", "application/json+ld"))
-@Api(value="/api/search{ext:(.asmx)?}", description = "Endpoint to Search with Label")
 class LookupResource extends Logging {
 
     @Context
@@ -25,7 +24,10 @@ class LookupResource extends Logging {
 
     @DefaultValue("") @QueryParam("QueryString")
     var query    : String   = _
-
+    
+    @DefaultValue("en") @QueryParam("lang")
+    var lang    : String   = _
+    
     @DefaultValue("") @QueryParam("QueryClass")
     var ontologyClass : String = _
 
@@ -34,12 +36,8 @@ class LookupResource extends Logging {
 
     @GET
     @Path("/KeywordSearch")
-    @ApiOperation(value = "Gets a list of  resource.")//, response = classOf[Result], responseContainer = "list")
-    @ApiResponses(Array(
-        new ApiResponse(code = 200, message = "Keyword Found!!"),
-        new ApiResponse(code = 404, message = " Keyword resource not found")
-    ))
     def keywordSearch : Response = {
+        searcher.defineSearchLanguage(lang)
         val results = searcher.keywordSearch(query, ontologyClass, maxHits)
         logger.info("KeywordSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
         ok(results)
@@ -48,6 +46,7 @@ class LookupResource extends Logging {
     @GET
     @Path("/PrefixSearch")
     def prefixSearch : Response = {
+        searcher.defineSearchLanguage(lang)
         val results = searcher.prefixSearch(query, ontologyClass, maxHits)
         logger.info("PrefixSearch found "+results.length+": MaxHits="+maxHits.toString+" QueryClass="+ontologyClass+" QueryString="+query)
         ok(results)

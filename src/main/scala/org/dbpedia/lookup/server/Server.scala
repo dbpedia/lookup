@@ -50,10 +50,11 @@ object Server extends Logging {
     @volatile private var running = true
 
     def main(args : Array[String]) {
-        val indexDir = new File(args(0))
+        //get the index dir for all index
+         val indexbaseDir = new File(args(0))
 
         val port   = System.getProperty("http.port", "1111").toInt
-        val server = new Server(port, new Searcher(indexDir))
+        val server = new Server(port, new Searcher(indexbaseDir))
 
         server.start()
 
