@@ -62,7 +62,29 @@
 
 	<build>
 		<plugins>
-
+			<plugin>
+				<groupId>org.scalastyle</groupId>
+				<artifactId>scalastyle-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<configuration>
+					<verbose>false</verbose>
+					<failOnViolation>true</failOnViolation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<failOnWarning>false</failOnWarning>
+					<sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
+					<testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
+					<configLocation>${basedir}/lib/scalastyle_config.xml</configLocation>
+					<outputFile>${project.basedir}/scalastyle-output.xml</outputFile>
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>com.github.kongchen</groupId>
 				<artifactId>swagger-maven-plugin</artifactId>
@@ -220,10 +242,8 @@
 							<!-- target to generate -->
 							<language>html</language>
 
-							<!-- pass any necessary config options
-							<configOptions>
-								<dateLibrary>java8</dateLibrary>
-							</configOptions> -->
+							<!-- pass any necessary config options <configOptions> <dateLibrary>java8</dateLibrary> 
+								</configOptions> -->
 
 							<output>target/generatedSwaggerDocument</output>
 						</configuration>
@@ -232,7 +252,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>	
+				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>

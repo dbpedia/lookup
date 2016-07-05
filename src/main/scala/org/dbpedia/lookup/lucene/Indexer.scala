@@ -36,7 +36,6 @@ class Indexer(val indexDir: File) extends Logging {
         values.add(value)
         fields.put(field, values)
         collector.put(uri, fields)
-
         count += 1
         if (count % 100000 == 0) {
           logger.info(count + " data points read")
@@ -183,7 +182,7 @@ object Indexer extends Logging {
   }
 
   private def getRedirectUris(redirectsFile: File): scala.collection.Set[String] = {
-    val reds = new scala.collection.mutable.HashSet[String]()
+    val redericts = new scala.collection.mutable.HashSet[String]()
     logger.info("Reading redirects from " + redirectsFile)
     val parser = new NxParser(new FileInputStream(redirectsFile))
     while (parser.hasNext) {
@@ -191,10 +190,10 @@ object Indexer extends Logging {
       if (triple(1).toString != "http://dbpedia.org/ontology/wikiPageRedirects") {
         throw new Exception("predicate must be http://dbpedia.org/ontology/wikiPageRedirects; got " + triple(1).toString)
       }
-      reds.add(triple(0).toString)
+      redericts.add(triple(0).toString)
     }
     logger.info("Done reading redirects")
-    reds
+    redericts
   }
 
 }

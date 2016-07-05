@@ -19,55 +19,50 @@ import io.swagger.jaxrs.config.BeanConfig
  */
 
 class SearcherProvider(searcher: Searcher)
-    extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
+  extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
 
 class Server(port: Int, searcher: Searcher) {
-    val resources = {
-        val config = new ClassNamesResourceConfig(
-          classOf[LookupResource]
-        // classOf[io.swagger.jaxrs.listing.ApiListingResource],
-        // classOf[io.swagger.jaxrs.listing.SwaggerSerializers]
-        )
-        config.getSingletons.add(new SearcherProvider(searcher))
-        config
+  val resources = {
+    val config = new ClassNamesResourceConfig(classOf[LookupResource])
+    config.getSingletons.add(new SearcherProvider(searcher))
+    config
 
-    }
+  }
 
-    val serverUri = new URI("http://localhost:" + port.toString + "/")
-    val server    = HttpServerFactory.create(serverUri, resources)
+  val serverUri = new URI("http://localhost:" + port.toString + "/")
+  val server = HttpServerFactory.create(serverUri, resources)
 
-    def start() {
-        server.start()
-    }
-    def stop() {
-        server.stop(0)
-    }
+  def start() {
+    server.start()
+  }
+  def stop() {
+    server.stop(0)
+  }
 
 }
 
 object Server extends Logging {
 
-    @volatile private var running = true
+  @volatile private var running = true
 
-    def main(args : Array[String]) {
-        //get the index dir for all index
-         val indexbaseDir = new File(args(0))
+  def main(args: Array[String]) {
+    //get the index dir for all index
+    val indexbaseDir = new File(args(0))
 
-        val port   = System.getProperty("http.port", "1111").toInt
-        val server = new Server(port, new Searcher(indexbaseDir))
+    val port = System.getProperty("http.port", "1111").toInt
+    val server = new Server(port, new Searcher(indexbaseDir))
 
-        server.start()
+    server.start()
 
-        val baseUri = server.serverUri.toString
+    val baseUri = server.serverUri.toString
 
-        logger.info("Server started in " + System.getProperty("user.dir") + " listening on " + baseUri)
+    logger.info("Server started in " + System.getProperty("user.dir") + " listening on " + baseUri)
 
-        while(running) {
-            Thread.sleep(100)
-        }
-
-        //Stop the HTTP server
-        server.stop()
+    while (running) {
+      Thread.sleep(100)
     }
+
+    server.stop()
+  }
 
 }
