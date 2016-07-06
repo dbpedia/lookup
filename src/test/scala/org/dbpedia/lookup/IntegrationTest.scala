@@ -25,7 +25,7 @@ class IntegrationTest extends FunSuite with BeforeAndAfterAll {
   var server : Server = _
 
   override def beforeAll() {
-    Indexer.main(Array(tmpDir.toString, "src/test/resources/redirects.nt", "src/test/resources/data.nt"))
+    Indexer.main(Array("src/test/resources"))
     server = new Server(port, new Searcher(tmpDir))
     server.start
   }
@@ -68,7 +68,14 @@ class IntegrationTest extends FunSuite with BeforeAndAfterAll {
     val xml  = XML.loadString(body)
     assert((xml \ "Result").size == 1)
   }
-
+  
+  test("Language works") {
+    val body = get("/api/search/KeywordSearch?MaxHits=1&QueryString=beirut&lang=en").getEntity(classOf[String])
+    val xml  = XML.loadString(body)
+    assert((xml \ "Result" \ "Label").head.text == "Beirut")
+    assert((xml \ "Result").size == 1)
+  }
+  
   test("legacy .asmx in url is optional") {
     assert(get("/api/search.asmx/KeywordSearch").getStatus == 200)
     assert(get("/api/search/KeywordSearch").getStatus == 200)

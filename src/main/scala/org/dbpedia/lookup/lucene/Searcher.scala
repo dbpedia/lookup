@@ -35,7 +35,7 @@ class Searcher(val indexbaseDir: File) {
       case _ => prop.getProperty("index_en")
 
     }
-    val langIndexDir = indexbaseDir.getPath() + "/" + languageFolder
+    val langIndexDir = indexbaseDir.getAbsolutePath() + "\\" + languageFolder
     indexReader = IndexReader.open(FSDirectory.open(new File(langIndexDir)))
     if (indexReader != null) {
       indexSearcher = new IndexSearcher(indexReader)
