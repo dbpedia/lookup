@@ -1,21 +1,18 @@
-FROM java:8
+FROM maven
 
-# Install maven
-RUN apt-get update
-RUN apt-get install -y maven
-
-WORKDIR /Users/Kunal/workspace/lookup
+WORKDIR /app/lookup
 
 # Prepare by downloading dependencies
-ADD pom.xml /Users/Kunal/workspace/lookup/pom.xml
-RUN ["mvn", "dependency:resolve"]
-RUN ["mvn", "verify"]
-
-#Need to download datasets
+ADD pom.xml /app/lookup/pom.xml
+ADD swagger.json /app/lookup/swagger.json
+RUN mvn install
 
 # Adding source, compile and package into a fat jar
-ADD src /lookup/src
-RUN ["mvn", "package"]
+ADD src /app/lookup/src
+RUN mvn package -Dmaven.test.skip=true
 
+# Expose port 1111
 EXPOSE 1111
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/dbpedia-lookup-3.1-jar-with-dependencies.jar"]
+
+# define default command as run server
+CMD ["mvn", "scala:run", "-Dlauncher=Server", "-DaddArgs=/app/lookup/index"]
