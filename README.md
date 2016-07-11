@@ -86,7 +86,7 @@ To re-build the index you will require
 
 
 ### Get the following DBpedia datasets
-from http://downloads.dbpedia.org/current/en/
+from http://downloads.dbpedia.org/2015-10/core-i18n/en/
 
 * redirects\_en.nt
 * short\_abstracts\_en.nt
