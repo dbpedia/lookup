@@ -9,8 +9,9 @@ import org.apache.lucene.index.{ Term, IndexReader }
 import org.dbpedia.extraction.util.WikiUtil
 import org.dbpedia.lookup.entities._
 import org.apache.lucene.queryParser.QueryParser
+import org.dbpedia.lookup.util.Logging
 
-class Searcher(val indexbaseDir: File) {
+class Searcher(val indexbaseDir: File) extends Logging {
 
   private var indexReader: IndexReader = null
 
@@ -27,21 +28,18 @@ class Searcher(val indexbaseDir: File) {
       case "en" => prop.getProperty("index_en")
       case "de" => prop.getProperty("index_de")
       case "es" => prop.getProperty("index_es")
-      case "ja" => prop.getProperty("index_ja")
-      case "nl" => prop.getProperty("index_nl")
-      case "fr" => prop.getProperty("index_fr")
-      case "pt" => prop.getProperty("index_pt")
-      case "ru" => prop.getProperty("index_ru")
-      case _ => prop.getProperty("index_en")
+      case _    => prop.getProperty("index_en")
 
     }
-    val langIndexDir = indexbaseDir.getAbsolutePath() + "\\" + languageFolder
+    val langIndexDir = indexbaseDir.getAbsolutePath() + File.separator + languageFolder
     indexReader = IndexReader.open(FSDirectory.open(new File(langIndexDir)))
     if (indexReader != null) {
       indexSearcher = new IndexSearcher(indexReader)
       sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
       queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD,
         LuceneConfig.analyzer)
+    } else {
+      logger.info("Index does not exist")
     }
   }
 
@@ -89,7 +87,7 @@ class Searcher(val indexbaseDir: File) {
 
     getOntologyClassQuery(ontologyClass) match {
       case Some(q: Query) => boolQuery.add(q, BooleanClause.Occur.MUST)
-      case _ =>
+      case _              =>
     }
 
     boolQuery
@@ -123,7 +121,7 @@ class Searcher(val indexbaseDir: File) {
     val uri: String = doc.get(LuceneConfig.Fields.URI)
     val description: String = doc.get(LuceneConfig.Fields.DESCRIPTION)
     val ontologyClasses: Set[OntologyClass] = doc.getValues(LuceneConfig.Fields.CLASS) match {
-      case null => Set.empty
+      case null    => Set.empty
       case classes => classes.map(uri => new OntologyClass(uri)).toSet
     }
     val categories: Set[Category] = doc.getValues(LuceneConfig.Fields.CATEGORY) match {
@@ -131,7 +129,7 @@ class Searcher(val indexbaseDir: File) {
       case cats => cats.map(uri => new Category(uri)).toSet
     }
     val templates: Set[Template] = doc.getValues(LuceneConfig.Fields.TEMPLATE) match {
-      case null => Set.empty
+      case null  => Set.empty
       case temps => temps.map(uri => new Template(uri)).toSet
     }
     val redirects: Set[Redirect] = doc.getValues(LuceneConfig.Fields.REDIRECT) match {
@@ -139,7 +137,7 @@ class Searcher(val indexbaseDir: File) {
       case reds => reds.map(uri => new Redirect(uri)).toSet
     }
     val refCount: Int = doc.get(LuceneConfig.Fields.REFCOUNT) match {
-      case null => 0
+      case null          => 0
       case count: String => count.toInt
     }
 

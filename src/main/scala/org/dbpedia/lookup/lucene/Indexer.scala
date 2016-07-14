@@ -1,7 +1,6 @@
 package org.dbpedia.lookup.lucene
 
 import org.apache.lucene.store.FSDirectory
-import java.util.Properties;
 import org.apache.lucene.document.{ Field, Document }
 import org.apache.lucene.index.{ IndexReader, Term, IndexWriter }
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
@@ -11,7 +10,7 @@ import org.dbpedia.extraction.util.WikiUtil
 import org.dbpedia.lookup.inputformat.{ WikiStatsExtractor, InputFormat, DBpediaNTriplesInputFormat, PignlprocTSVInputFormat }
 import org.apache.lucene.search.{ IndexSearcher, TermQuery }
 import org.dbpedia.lookup.util.Logging
-import java.util.Properties
+
 /**
  * Indexes the lookup data to a Lucene directory.
  */
@@ -36,6 +35,7 @@ class Indexer(val indexDir: File) extends Logging {
         values.add(value)
         fields.put(field, values)
         collector.put(uri, fields)
+
         count += 1
         if (count % 100000 == 0) {
           logger.info(count + " data points read")
@@ -131,27 +131,11 @@ object Indexer extends Logging {
    * Index data to a directory.
    */
   def main(args: Array[String]) {
-    //Target Language
-    val index = new String(args(0))
+    val indexDir = new File(args(0))
     val redirectsFile = new File(args(1))
     val data = args.drop(2)
 
-    val prop = new Properties()
-    prop.load(new FileInputStream("src/main/resources/config/dbpedia.properties"))
-    //Target Directory
-    val indexDir = index match {
-      case "en" => prop.getProperty("index_en")
-      case "de" => prop.getProperty("index_de")
-      case "es" => prop.getProperty("index_es")
-      case "ja" => prop.getProperty("index_ja")
-      case "nl" => prop.getProperty("index_nl")
-      case "fr" => prop.getProperty("index_fr")
-      case "pt" => prop.getProperty("index_pt")
-      case "ru" => prop.getProperty("index_ru")
-      case _ => prop.getProperty("index_en")
-
-    }
-    val indexer = new Indexer(new File(indexDir))
+    val indexer = new Indexer(indexDir)
 
     for (fileName <- data) {
       var in: InputStream = new FileInputStream(fileName)
@@ -182,7 +166,7 @@ object Indexer extends Logging {
   }
 
   private def getRedirectUris(redirectsFile: File): scala.collection.Set[String] = {
-    val redericts = new scala.collection.mutable.HashSet[String]()
+    val reds = new scala.collection.mutable.HashSet[String]()
     logger.info("Reading redirects from " + redirectsFile)
     val parser = new NxParser(new FileInputStream(redirectsFile))
     while (parser.hasNext) {
@@ -190,10 +174,10 @@ object Indexer extends Logging {
       if (triple(1).toString != "http://dbpedia.org/ontology/wikiPageRedirects") {
         throw new Exception("predicate must be http://dbpedia.org/ontology/wikiPageRedirects; got " + triple(1).toString)
       }
-      redericts.add(triple(0).toString)
+      reds.add(triple(0).toString)
     }
     logger.info("Done reading redirects")
-    redericts
+    reds
   }
 
 }

@@ -59,9 +59,9 @@ class LookupResource extends Logging {
 
   private def serialize(results: List[Result]): String = {
     val serializer = (accept) match {
-      case "application/json" => new ResultJsonSerializer
+      case "application/json"    => new ResultJsonSerializer
       case "application/json+ld" => new ResultJsonLDSerializer
-      case _ => new ResultXmlSerializer
+      case _                     => new ResultXmlSerializer
     }
 
     serializer.prettyPrint(results)

@@ -10,13 +10,6 @@ import java.io.File
 import org.dbpedia.lookup.util.Logging
 import io.swagger.jaxrs.config.BeanConfig
 
-/**
- * Created by IntelliJ IDEA.
- * User: Max
- * Date: 17.01.11
- * Time: 13:48
- * DBpedia Lookup Server
- */
 
 class SearcherProvider(searcher: Searcher)
   extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
@@ -26,7 +19,6 @@ class Server(port: Int, searcher: Searcher) {
     val config = new ClassNamesResourceConfig(classOf[LookupResource])
     config.getSingletons.add(new SearcherProvider(searcher))
     config
-
   }
 
   val serverUri = new URI("http://localhost:" + port.toString + "/")
