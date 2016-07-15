@@ -24,12 +24,17 @@ class Searcher(val indexbaseDir: File) extends Logging {
   prop.load(new FileInputStream("src/main/resources/config/dbpedia.properties"))
 
   def defineSearchLanguage(lang: String) = {
+    val message = lang match {
+      case "en" => logger.info("Searching for English Index")
+      case "de" => logger.info("Searching for German Index")
+      case "es" => logger.info("Searching for Spanish Index")
+      case _    => logger.info("Language not supported. Searching for English (Default) Index")
+    }
     val languageFolder = lang match {
       case "en" => prop.getProperty("index_en")
       case "de" => prop.getProperty("index_de")
       case "es" => prop.getProperty("index_es")
       case _    => prop.getProperty("index_en")
-
     }
     val langIndexDir = indexbaseDir.getAbsolutePath() + File.separator + languageFolder
     indexReader = IndexReader.open(FSDirectory.open(new File(langIndexDir)))
@@ -117,7 +122,6 @@ class Searcher(val indexbaseDir: File) extends Logging {
 
   private def getResult(scoreDoc: ScoreDoc): Result = {
     val doc = indexReader.document(scoreDoc.doc)
-
     val uri: String = doc.get(LuceneConfig.Fields.URI)
     val description: String = doc.get(LuceneConfig.Fields.DESCRIPTION)
     val ontologyClasses: Set[OntologyClass] = doc.getValues(LuceneConfig.Fields.CLASS) match {
