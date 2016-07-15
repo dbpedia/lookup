@@ -39,7 +39,7 @@ class LookupResource extends Logging {
   def keywordSearch: Response = {
     searcher.defineSearchLanguage(lang)
     val results = searcher.keywordSearch(query, ontologyClass, maxHits)
-    logger.info("KeywordSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query)
+    logger.info("KeywordSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
     ok(results)
   }
 
@@ -48,7 +48,7 @@ class LookupResource extends Logging {
   def prefixSearch: Response = {
     searcher.defineSearchLanguage(lang)
     val results = searcher.prefixSearch(query, ontologyClass, maxHits)
-    logger.info("PrefixSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query)
+    logger.info("PrefixSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
     ok(results)
   }
 

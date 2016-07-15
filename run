@@ -14,4 +14,4 @@ do
   ADD_ARGS="$ADD_ARGS|$ARG"
 done
 
-mvn scala:run "-Dlauncher=$LAUNCHER" "-DaddArgs=$ADD_ARGS" 
+mvn scala:run "-Dlauncher=$LAUNCHER" "-DaddArgs=$ADD_ARGS" -Dmaven.test.skip=true 
