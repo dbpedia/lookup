@@ -25,7 +25,7 @@ class LookupResource extends Logging {
   @DefaultValue("") @QueryParam("QueryString")
   var query: String = _
 
-  @DefaultValue("en") @QueryParam("lang")
+  @DefaultValue("en") @QueryParam("Lang")
   var lang: String = _
 
   @DefaultValue("") @QueryParam("QueryClass")
