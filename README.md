@@ -14,7 +14,7 @@ The Keyword Search API can be used to find related DBpedia resources for a given
 
 Example: Places that have the related keyword "berlin"
 
-http://lookup.dbpedia.org/api/search/KeywordSearch?QueryClass=place&QueryString=berlin
+http://lookup.dbpedia.org/api/search/KeywordSearch?QueryClass=place&QueryString=berlin&&Lang=de
 
 ### Prefix Search (i.e. Autocomplete)
 
@@ -22,7 +22,7 @@ The Prefix Search API can be used to implement autocomplete input boxes. For a g
 
 Example: Top five resources for which a keyword starts with "berl"
 
-http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
+http://lookup.dbpedia.org/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl&&Lang=de
 
 ### Parameters
 
@@ -31,10 +31,11 @@ The query parameters accepted by the endpoints are
 * `QueryString`: a string for which a DBpedia URI should be found.
 * `QueryClass`: a DBpedia class from the Ontology that the results should have (for owl#Thing and untyped resource, leave this parameter empty).
 * `MaxHits`: the maximum number of returned results (default: 5)
+* `Lang`: the language of indexer to be used for searching the query (default: en)
 
-### JSON support
+### JSON and Google KG like ouptut Support
 
-By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header. JSON-LD output can also be obtained `Accept: application/json+ld` 
+By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header. Google Knowledge Graph like output can also be obtained `Accept: application/json+ld` 
 
 ## Running a local mirror of the webservice
 
@@ -46,19 +47,20 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ### Download and configure the index
 
-You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2jb/AAAY8_DTZj-Y7Mku29oVhiDla?dl=0)
+You can get our i18n supposted indexes from [Dropbox](https://www.dropbox.com/s/vv9w7kz7jprqrmc/index.zip?dl=0)
 
 ### Run the server
 
     
-    `./run Server [PATH TO THE INDEX]/[VERSION]/`
+    `./run Server [PATH TO THE INDEXBASEDIR]/`
    
    E.g:
     
-    `./run Server /opt/dbpedia-lookup/2015-04`
+    `./run Server /opt/dbpedia-lookup/index`
 
-**Note: The index file must be decompressed**
-    
+
+**Note:Please maintain the structure of the index folder in order for the code to work accurately. The index file must be decompressed**
+
 #### Available versions: 
     
 * current - from Latest DBpedia Dump
@@ -66,16 +68,18 @@ You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2j
 Archive: 2015-04, 3.9 and 3.8 
     
     
-#### Available languages (i18n working in progress): 
+#### Available languages: 
     
 * en - English
-    
+* es - Spanish
+* de - German
     
 
 The server should now be running at http://localhost:1111
+
 ## Updating the Documentation
 
-The documentation is controlled with the swagger.json file. Once this file is updated along with the code, re building the whole project would result in generation of static html pages in target/generatedSwaggerDocument folder.
+The documentation is controlled with the swagger.yaml file. The swagger file contains the descriptions of the services and the models present inside the lookup code. Once this file is updated along with the code, re building the whole project would result in generation of static html pages in target/generatedSwaggerDocument folder.
 
 ## Rebuilding the index
 
@@ -119,6 +123,13 @@ The indexer has to be run twice:
 2. with the wikistatsextractor data
 
         ./run Indexer lookup_index_dir redirects_en.nt pairCounts
+        
+### Incorporating the new Index 
+1. Rename the folder containing your index in the format index\_[language]. For example, index\_en.
+2. Copy the new index to the folder where all the other indexes (downloaded/generated) are stored.  
+3. Open the file dbpedia.properties  (lookup/src/main/resources/config/dbpedia.properties). 
+4. Add a new property index\_[lang]="index\_[language]".
+5. Finally update the switch cases to point to the new property for the indexed language in the Searcher.scala module under the lucene package. 
 
 ## Support and feedback
 
