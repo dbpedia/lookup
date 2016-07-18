@@ -2,8 +2,12 @@
     "swagger": "2.0",
     "info": {
         "title": "DBpedia Lookup",
-        "version": "1.0",
-        "description": "DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords. Related means that either the label of a resource matches, or an anchor text that was frequently used in Wikipedia to refer to a specific resource matches (for example the resource http://dbpedia.org/resource/United_States can be looked up by the string \"USA\"). The results are ranked by the number of inlinks pointing from other Wikipedia pages at a result page."
+        "version": "2.0",
+        "description": "DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords. Related means that either the label of a resource matches, or an anchor text that was frequently used in Wikipedia to refer to a specific resource matches (for example the resource http://dbpedia.org/resource/United_States can be looked up by the string \"USA\"). The results are ranked by the number of inlinks pointing from other Wikipedia pages at a result page.\n\nTwo APIs are offered-Keyword Search and Prefix Search. A hosted version of the Lookup service is available on the DBpedia server infrastructure.\n\nThe Dbpedia now also supports internationalization for the English, German and Spanish.",
+        "contact": {
+            "name": "Dbpedia Developers",
+            "url": "https://lists.sourceforge.net/lists/listinfo/dbpedia-developers"
+        }
     },
     "host": "lookup.dbpedia.org",
     "basePath": "/api/search.asmx",
@@ -142,7 +146,7 @@
     "definitions": {
         "Uri": {
             "type": "object",
-            "description": "Class for URI",
+            "description": "Class for URI. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "type": "string"
@@ -151,7 +155,7 @@
         },
         "Label": {
             "type": "object",
-            "description": "Class for Label",
+            "description": "Class for Label. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "label": {
                     "type": "string"
@@ -160,7 +164,7 @@
         },
         "OntologyClass": {
             "type": "object",
-            "description": "Ontology Class Definition.",
+            "description": "Ontology Class Definition.Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "$ref": "#/definitions/Uri"
@@ -172,7 +176,7 @@
         },
         "Category": {
             "type": "object",
-            "description": "<TODO>",
+            "description": "<TODO>. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "$ref": "#/definitions/Uri"
@@ -184,7 +188,7 @@
         },
         "Template": {
             "type": "object",
-            "description": "<TODO>",
+            "description": "<TODO>. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "$ref": "#/definitions/Uri"
@@ -193,7 +197,7 @@
         },
         "Redirect": {
             "type": "object",
-            "description": "Handles the redirection of the resource's URI.",
+            "description": "Handles the redirection of the resource's URI. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "$ref": "#/definitions/Uri"
@@ -202,7 +206,7 @@
         },
         "Result": {
             "type": "object",
-            "description": "The result of the query has the following properties. These properties are serialised to display in various formats.",
+            "description": "The result of the query has the following properties. These properties are serialised to display in various formats. Package- (org.dbpedia.lookup.entities.Entities.scala)",
             "properties": {
                 "uri": {
                     "$ref": "#/definitions/Uri"
@@ -241,7 +245,7 @@
         },
         "ResultJsonLDSerializer": {
             "type": "object",
-            "description": "The serializer will parse the Result to Json+LD format when the document accepts the Header \"Application/json+ld\"",
+            "description": "The serializer will parse the Result to Json+LD format when the document accepts the Header \"Application/json+ld\". Package- (org.dbpedia.lookup.entities.EntitiesSerialization.scala)",
             "properties": {
                 "Result": {
                     "$ref": "#/definitions/Result"
@@ -250,7 +254,7 @@
         },
         "ResultJsonSerializer": {
             "type": "object",
-            "description": "The serializer will parse the Result to Json format when the document accepts the Header \"Application/json\"",
+            "description": "The serializer will parse the Result to Json format when the document accepts the Header \"Application/json\". Package- (org.dbpedia.lookup.entities.EntitiesSerialization.scala)",
             "properties": {
                 "Result": {
                     "$ref": "#/definitions/Result"
@@ -259,12 +263,58 @@
         },
         "ResultXmlSerializer": {
             "type": "object",
-            "description": "The serializer will parse the Result to XML format. DEFAULT",
+            "description": "The serializer will parse the Result to XML format. DEFAULT. Package- (org.dbpedia.lookup.entities.EntitiesSerialization.scala)",
             "properties": {
                 "Result": {
                     "$ref": "#/definitions/Result"
                 }
             }
+        },
+        "Server": {
+            "type": "object",
+            "description": "Configures and starts the server. Default port is 1111. Package- (org.dbpedia.lookup.server.Server.scala).",
+            "properties": {
+                "serverUri": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "integer"
+                },
+                "baseuri": {
+                    "type": "string"
+                }
+            }
+        },
+        "LookupResource": {
+            "type": "object",
+            "description": "The class that takes care of the search parmateres and query. It parses the input query and calls the service accordingly.",
+            "properties": {
+                "accept": {
+                    "type": "string"
+                },
+                "lang": {
+                    "type": "string",
+                    "default": "en"
+                },
+                "maxHits": {
+                    "type": "integer",
+                    "default": 5
+                },
+                "query": {
+                    "type": "string"
+                },
+                "searcher": {
+                    "$ref": "#/definitions/Searcher"
+                }
+            }
+        },
+        "Searcher": {
+            "type": "object",
+            "description": "The Searcher class is responsible for performing the searches. It matches the language of the query (DEFAULT- English) and searches the corresponding index for the query and returns result."
+        },
+        "Indexer": {
+            "type": "object",
+            "description": "The indexer class is completely independent module which allows users to generate new indexes."
         },
         "Error": {
             "type": "object",
