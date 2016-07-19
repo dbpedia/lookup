@@ -10,7 +10,6 @@ import java.io.File
 import org.dbpedia.lookup.util.Logging
 import io.swagger.jaxrs.config.BeanConfig
 
-
 class SearcherProvider(searcher: Searcher)
   extends SingletonTypeInjectableProvider[Context, Searcher](classOf[Searcher], searcher)
 

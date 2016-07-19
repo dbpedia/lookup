@@ -24,7 +24,7 @@ class Indexer(val indexDir: File) extends Logging {
   /**
    * Index a data file for the lookup service.
    */
-  def index(dataTraversable: InputFormat) {
+   def index(dataTraversable: InputFormat) {
     var count = 0
     val collector = scala.collection.mutable.HashMap[String, scala.collection.mutable.HashMap[String, scala.collection.mutable.HashSet[String]]]()
 

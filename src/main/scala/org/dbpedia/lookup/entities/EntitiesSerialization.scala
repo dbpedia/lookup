@@ -10,38 +10,9 @@ trait ResultSerializer {
 class ResultJsonSerializer extends ResultSerializer {
 
   def prettyPrint(results: Traversable[Result]): String = {
-
     import net.liftweb.json.JsonDSL._
-
     val json = ("results" -> results.map { result =>
       ("uri" -> result.uri) ~
-      ("label" -> result.label) ~
-      ("description" -> result.description) ~
-      ("refCount" -> result.refCount) ~
-      ("classes" -> result.classes.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
-      ("categories" -> result.categories.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
-      ("templates" -> result.templates.map(c => ("uri" -> c.uri))) ~
-      ("redirects" -> result.redirects.map(c => ("uri" -> c.uri)))
-    })
-
-    pretty(render(json))
-  }
-
-}
-
-class ResultJsonLDSerializer extends ResultSerializer {
-
-  def prettyPrint(results: Traversable[Result]): String = {
-
-    import net.liftweb.json.JsonDSL._
-
-    var jsonld = ("@context" ->
-      ("@description" -> "dbpedia.org/property/description") ~
-      ("@refCount" -> "dbpedia.org/property/categories") ~
-      ("@templates" -> "dbpedia.org/property/templates") ~
-      ("@redirects" -> "dbpedia.org/ontology/wikiPageRedirects")) ~
-      ("results" -> results.map { result =>
-        ("uri" -> result.uri) ~
         ("label" -> result.label) ~
         ("description" -> result.description) ~
         ("refCount" -> result.refCount) ~
@@ -49,6 +20,28 @@ class ResultJsonLDSerializer extends ResultSerializer {
         ("categories" -> result.categories.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
         ("templates" -> result.templates.map(c => ("uri" -> c.uri))) ~
         ("redirects" -> result.redirects.map(c => ("uri" -> c.uri)))
+    })
+    pretty(render(json))
+  }
+}
+class ResultJsonLDSerializer extends ResultSerializer {
+
+  def prettyPrint(results: Traversable[Result]): String = {
+    import net.liftweb.json.JsonDSL._
+    var jsonld = ("@context" ->
+      ("@description" -> "dbpedia.org/property/description") ~
+      ("@refCount" -> "dbpedia.org/property/categories") ~
+      ("@templates" -> "dbpedia.org/property/templates") ~
+      ("@redirects" -> "dbpedia.org/ontology/wikiPageRedirects")) ~
+      ("results" -> results.map { result =>
+        ("uri" -> result.uri) ~
+          ("label" -> result.label) ~
+          ("description" -> result.description) ~
+          ("refCount" -> result.refCount) ~
+          ("classes" -> result.classes.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
+          ("categories" -> result.categories.map(c => ("uri" -> c.uri) ~ ("label" -> c.label))) ~
+          ("templates" -> result.templates.map(c => ("uri" -> c.uri))) ~
+          ("redirects" -> result.redirects.map(c => ("uri" -> c.uri)))
       })
 
     pretty(render(jsonld))
