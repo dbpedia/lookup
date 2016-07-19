@@ -4,7 +4,13 @@ syntax: glob
 *.iml
 *.ipr
 *.iws
+.DS_Store
+*.cache-main
+*.cache-tests
+*.classpath
+*.project
 target/*
 
 /target/
+.git/*
 .settings

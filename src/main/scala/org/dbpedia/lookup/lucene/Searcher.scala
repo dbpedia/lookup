@@ -23,29 +23,22 @@ class Searcher(val indexbaseDir: File) extends Logging {
   val prop = new Properties()
   prop.load(new FileInputStream("src/main/resources/config/dbpedia.properties"))
 
-  def defineSearchLanguage(lang: String) = {
-    val message = lang match {
-      case "en" => logger.info("Searching for English Index")
-      case "de" => logger.info("Searching for German Index")
-      case "es" => logger.info("Searching for Spanish Index")
-      case _    => logger.info("Language not supported. Searching for English (Default) Index")
+  def defineSearchLanguage(lang: String): Boolean = {
+
+    if (prop.getProperty("index_" + lang) == null) {
+      logger.info("Index does not exist")
+      return false
     }
-    val languageFolder = lang match {
-      case "en" => prop.getProperty("index_en")
-      case "de" => prop.getProperty("index_de")
-      case "es" => prop.getProperty("index_es")
-      case _    => prop.getProperty("index_en")
-    }
+    val languageFolder = prop.getProperty("index_" + lang)
+    logger.info("Using Index " + lang)
     val langIndexDir = indexbaseDir.getAbsolutePath() + File.separator + languageFolder
     indexReader = IndexReader.open(FSDirectory.open(new File(langIndexDir)))
-    if (indexReader != null) {
-      indexSearcher = new IndexSearcher(indexReader)
-      sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
-      queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD,
-        LuceneConfig.analyzer)
-    } else {
-      logger.info("Index does not exist")
-    }
+
+    indexSearcher = new IndexSearcher(indexReader)
+    sort = new Sort(new SortField(LuceneConfig.Fields.REFCOUNT, SortField.INT, true))
+    queryParser = new QueryParser(LuceneConfig.version, LuceneConfig.Fields.SURFACE_FORM_KEYWORD,
+      LuceneConfig.analyzer)
+    true
   }
 
   def keywordSearch(keyword: String, ontologyClass: String = "", maxResults: Int = 5): List[Result] = {

@@ -25,7 +25,7 @@ class LookupResource extends Logging {
   @DefaultValue("") @QueryParam("QueryString")
   var query: String = _
 
-  @DefaultValue("en") @QueryParam("Lang")
+  @DefaultValue("en") @QueryParam("Language")
   var lang: String = _
 
   @DefaultValue("") @QueryParam("QueryClass")
@@ -37,19 +37,29 @@ class LookupResource extends Logging {
   @GET
   @Path("/KeywordSearch")
   def keywordSearch: Response = {
-    searcher.defineSearchLanguage(lang)
-    val results = searcher.keywordSearch(query, ontologyClass, maxHits)
-    logger.info("KeywordSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
-    ok(results)
+    if (searcher.defineSearchLanguage(lang) == true) {
+      val results = searcher.keywordSearch(query, ontologyClass, maxHits)
+      logger.info("KeywordSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
+      ok(results)
+
+    } else {
+      val results = List.empty
+      ok(results)
+    }
   }
 
   @GET
   @Path("/PrefixSearch")
   def prefixSearch: Response = {
-    searcher.defineSearchLanguage(lang)
-    val results = searcher.prefixSearch(query, ontologyClass, maxHits)
-    logger.info("PrefixSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
-    ok(results)
+    if (searcher.defineSearchLanguage(lang) == true) {
+      val results = searcher.keywordSearch(query, ontologyClass, maxHits)
+      logger.info("PrefixSearch found " + results.length + ": MaxHits=" + maxHits.toString + " QueryClass=" + ontologyClass + " QueryString=" + query + " Language=" + lang)
+      ok(results)
+
+    } else {
+      val results = List.empty
+      ok(results)
+    }
   }
 
   // Sets the necessary headers in order to enable CORS
