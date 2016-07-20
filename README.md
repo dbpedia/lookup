@@ -39,7 +39,23 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ## Running a local mirror of the webservice
 
-### Clone and build DBpedia Lookup
+There are two ways of running the service: 
+
+1. Docker - Using docker is an easy way to run the lookup without any pre-requisite tool installed in the machine.
+
+2. Standard method - In order to follow these steps please make sure you have Java and/or Scala SDK and Maven installed on your machine.
+
+
+### 1. Using Docker 
+1. Downlaod the latest version of [Docker](https://www.docker.com/products/overview).
+2. Once the docker is installed, run the following commands: 
+    
+     `docker pull dbpedia/lookup`
+
+
+     `docker run <additional options> dbpedia/lookup`
+    
+### 2. Standard Method :Clone and build DBpedia Lookup
 
     git clone git://github.com/dbpedia/lookup.git
     cd lookup
@@ -59,7 +75,7 @@ You can get our i18n supposted indexes from [Dropbox](https://www.dropbox.com/s/
     `./run Server /opt/dbpedia-lookup/index`
 
 
-**Note:Please maintain the structure of the index folder in order for the code to work accurately. The index file must be decompressed**
+**Note: Please maintain the structure of the index folder in order for the code to work accurately. The index file must be decompressed**
 
 #### Available versions: 
     
