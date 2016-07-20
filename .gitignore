@@ -13,4 +13,8 @@ target/*
 
 /target/
 .git/*
+index/*
+
+/index/
 .settings
+/bin/
