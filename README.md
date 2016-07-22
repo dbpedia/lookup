@@ -99,6 +99,8 @@ The server should now be running at http://localhost:1111
 
 The documentation is controlled with the swagger.yaml file. The swagger file contains the descriptions of the services and the models present inside the lookup code. Once this file is updated along with the code, re building the whole project would result in generation of static html pages in target/generatedSwaggerDocument folder.
 
+In order to look into the code flow and module descriptions copy the swagger.yaml file and paste into the [Swagger editor](http://editor.swagger.io/#/).
+
 ## Rebuilding the index
 
 Rebuilding an index is usually not required, if you only intend on running a local mirror of the service you can donwload a prebuilt index as outlined above.
