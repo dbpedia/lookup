@@ -1,22 +1,19 @@
+FROM maven
 
-FROM java:8
+WORKDIR /app/lookup
 
-MAINTAINER  DBpedia Team <dbpedia-developers@lists.sourceforge.net>
+# Prepare by downloading dependencies
+ADD pom.xml /app/lookup/pom.xml
+ADD swagger.yaml /app/lookup/swagger.yaml
+ADD index /app/lookup/index
+RUN mvn install
 
-RUN apt-get update && apt-get install -y \
-    curl
+# Adding source, compile and package into a fat jar
+ADD src /app/lookup/src
+RUN mvn package -Dmaven.test.skip=true
 
-ENV INDEX_URL https://www.dropbox.com/s/vv9w7kz7jprqrmc/index.zip?dl=0#
-ENV INDEX_FILENAME index.zip
+# Expose port 11001  For  Titan Server
+EXPOSE 11001
 
-ENV LOOKUP_JAR dbpedia-lookup-3.1-jar-with-dependencies.jar
-ENV LOOKUP_URL www.dropbox.com/s/5f852uwzov0hgmt
-
-RUN mkdir -p /opt/lookup && \
-    cd /opt/lookup && \
-    wget "http://$LOOKUP_URL/$LOOKUP_JAR?dl=1" -O $LOOKUP_JAR  && \
-    wget "http://$INDEX_URL/$INDEX_FILENAME?dl=1" -O $INDEX_FILENAME  && \
-    unzip $INDEX_FILENAME   && \
-    rm  $INDEX_FILENAME
-
-EXPOSE 1111
+# define default command as run server
+CMD ["mvn", "scala:run", "-Dlauncher=Server", "-DaddArgs=/app/lookup/index"]
