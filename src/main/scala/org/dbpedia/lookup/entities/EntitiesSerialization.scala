@@ -29,10 +29,11 @@ class ResultJsonLDSerializer extends ResultSerializer {
   def prettyPrint(results: Traversable[Result]): String = {
     import net.liftweb.json.JsonDSL._
     var jsonld = ("@context" ->
-      ("@description" -> "http://dbpedia.org/property/description") ~
-      ("@refCount" -> "http://dbpedia.org/property/categories") ~
-      ("@templates" -> "http://dbpedia.org/property/templates") ~
-      ("@redirects" -> "http://dbpedia.org/ontology/wikiPageRedirects")) ~
+      ("@vocab" -> "http://dbpedia.org/property/") ~
+      ("description" -> "http://dbpedia.org/property/description") ~
+      ("refCount" -> "http://dbpedia.org/property/categories") ~
+      ("templates" -> "http://dbpedia.org/property/templates") ~
+      ("redirects" -> "http://dbpedia.org/ontology/wikiPageRedirects")) ~
       ("results" -> results.map { result =>
         ("uri" -> result.uri) ~
           ("label" -> result.label) ~
