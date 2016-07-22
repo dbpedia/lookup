@@ -175,7 +175,7 @@
 							<jvmArgs>
 								<jvmArg>-Xmx512m</jvmArg>
 								<jvmArg>-Dlogback.configurationFile=logback.xml</jvmArg>
-								<jvmArg>-Dhttp.port=11001</jvmArg>
+								<jvmArg>-Dhttp.port=1111</jvmArg>
 							</jvmArgs>
 						</launcher>
 						<launcher>

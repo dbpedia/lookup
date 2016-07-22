@@ -12,8 +12,8 @@ RUN mvn install
 ADD src /app/lookup/src
 RUN mvn package -Dmaven.test.skip=true
 
-# Expose port 11001  For  Titan Server
-EXPOSE 11001
+# Expose port 1111
+EXPOSE 1111
 
 # define default command as run server
 CMD ["mvn", "scala:run", "-Dlauncher=Server", "-DaddArgs=/app/lookup/index"]
