@@ -53,7 +53,9 @@ There are two ways of running the service:
      `docker pull dbpedia/lookup`
 
 
-     `docker run <additional options> dbpedia/lookup`
+     `docker run -p 1111:1111 lookup`
+
+
     
 ### 2. Standard Method :Clone and build DBpedia Lookup
 
