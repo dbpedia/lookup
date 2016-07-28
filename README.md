@@ -35,28 +35,28 @@ The query parameters accepted by the endpoints are
 
 ### JSON and Google KG like ouptut Support
 
-By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header. Google Knowledge Graph like output can also be obtained `Accept: application/json+ld` 
+By default all data is returned as XML, the service also retuns JSON to any request including the `Accept: application/json` header. Google Knowledge Graph like output can also be obtained `Accept: application/json+ld`
 
 ## Running a local mirror of the webservice
 
-There are two ways of running the service: 
+There are two ways of running the service:
 
 1. Docker - Using docker is an easy way to run the lookup without any pre-requisite tool installed in the machine.
 
 2. Standard method - In order to follow these steps please make sure you have Java and/or Scala SDK and Maven installed on your machine.
 
 
-### 1. Using Docker 
+### 1. Using Docker
 1. Downlaod the latest version of [Docker](https://www.docker.com/products/overview).
-2. Once the docker is installed, run the following commands: 
-    
+2. Once the docker is installed, run the following commands:
+
      `docker pull dbpedia/lookup`
 
 
      `docker run -p 1111:1111 lookup`
 
 
-    
+
 ### 2. Standard Method :Clone and build DBpedia Lookup
 
     git clone git://github.com/dbpedia/lookup.git
@@ -65,33 +65,33 @@ There are two ways of running the service:
 
 ### Download and configure the index
 
-You can get our i18n supposted indexes from [Dropbox](https://www.dropbox.com/s/vv9w7kz7jprqrmc/index.zip?dl=0)
+You can get our i18n supposted indexes from [Drive](https://drive.google.com/file/d/0BzxOkquhahI4OWNJaVY2N2VJZk0/view?usp=sharing)
 
 ### Run the server
 
-    
+
     `./run Server [PATH TO THE INDEXBASEDIR]/`
-   
+
    E.g:
-    
+
     `./run Server /opt/dbpedia-lookup/index`
 
 
 **Note: Please maintain the structure of the index folder in order for the code to work accurately. The index file must be decompressed**
 
-#### Available versions: 
-    
+#### Available versions:
+
 * current - from Latest DBpedia Dump
 
-Archive: 2015-04, 3.9 and 3.8 
-    
-    
-#### Available languages: 
-    
+Archive: 2015-04, 3.9 and 3.8
+
+
+#### Available languages:
+
 * en - English
 * es - Spanish
 * de - German
-    
+
 
 The server should now be running at http://localhost:1111
 
@@ -136,20 +136,20 @@ Redirects are not indexed, but they are excluded as targets of lookup.
 
 The indexer has to be run twice:
 
-1. with the DBpedia data 
+1. with the DBpedia data
 
         ./run Indexer lookup_index_dir redirects_en.nt all_dbpedia_data.nt
 
 2. with the wikistatsextractor data
 
         ./run Indexer lookup_index_dir redirects_en.nt pairCounts
-        
-### Incorporating the new Index 
+
+### Incorporating the new Index
 1. Rename the folder containing your index in the format index\_[language]. For example, index\_en.
 2. Copy the new index to the folder where all the other indexes (downloaded/generated) are stored.  
-3. Open the file dbpedia.properties  (lookup/src/main/resources/config/dbpedia.properties). 
+3. Open the file dbpedia.properties  (lookup/src/main/resources/config/dbpedia.properties).
 4. Add a new property index\_[lang]="index\_[language]".
-5. Finally update the switch cases to point to the new property for the indexed language in the Searcher.scala module under the lucene package. 
+5. Finally update the switch cases to point to the new property for the indexed language in the Searcher.scala module under the lucene package.
 
 ## Support and feedback
 
