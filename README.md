@@ -65,7 +65,7 @@ There are two ways of running the service:
 
 ### Download and configure the index
 
-You can get our i18n supposted indexes from [Drive](https://drive.google.com/file/d/0BzxOkquhahI4OWNJaVY2N2VJZk0/view?usp=sharing)
+You can get our i18n supposted indexes from [Server](http://downloads.dbpedia.org/temporary/lookup/)
 
 ### Run the server
 
@@ -146,7 +146,7 @@ The indexer has to be run twice:
 
 ### Incorporating the new Index
 1. Rename the folder containing your index in the format index\_[language]. For example, index\_en.
-2. Copy the new index to the folder where all the other indexes (downloaded/generated) are stored.  
+2. Copy the new index to the folder where all the other indexes (downloaded/generated) are stored.
 3. Open the file dbpedia.properties  (lookup/src/main/resources/config/dbpedia.properties).
 4. Add a new property index\_[lang]="index\_[language]".
 5. Finally update the switch cases to point to the new property for the indexed language in the Searcher.scala module under the lucene package.
