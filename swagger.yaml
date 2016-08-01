@@ -41,7 +41,7 @@ paths:
           type: string
         - name: QueryClass
           in: query
-          description:  a DBpedia class from the Ontology that the results should have .
+          description:  a DBpedia class from the Ontology that the results should have.
           required: false
           type: string
         - name: maxHits
@@ -50,6 +50,12 @@ paths:
           default: 5
           required: false
           type: integer
+        - name: Language
+          in: query
+          description: Default is 'en' for English. The language which the results should be displayed.
+          default: en
+          required: false
+          type: string
       tags:
         - Keyword
       responses:
@@ -90,6 +96,12 @@ paths:
           default: 5
           required: false
           type: integer
+        - name: Language
+          in: query
+          description: Default is 'en' for English. The language which the results should be displayed.
+          default: en
+          required: false
+          type: string
       tags:
         - Autocomplete/Prefix
       responses:

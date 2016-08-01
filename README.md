@@ -31,7 +31,8 @@ The query parameters accepted by the endpoints are
 * `QueryString`: a string for which a DBpedia URI should be found.
 * `QueryClass`: a DBpedia class from the Ontology that the results should have (for owl#Thing and untyped resource, leave this parameter empty).
 * `MaxHits`: the maximum number of returned results (default: 5)
-* `Lang`: the language of indexer to be used for searching the query (default: en)
+* `Language`: the language of indexer to be used for searching the query (default: en)
+
 
 ### JSON and Google KG like ouptut Support
 
