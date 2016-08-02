@@ -44,7 +44,7 @@ paths:
           description:  a DBpedia class from the Ontology that the results should have.
           required: false
           type: string
-        - name: maxHits
+        - name: MaxHits
           in: query
           description: Default is 5. The number of results returned of the query fired.
           default: 5
