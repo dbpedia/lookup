@@ -125,5 +125,7 @@ The [DBpedia wiki](http://wiki.dbpedia.org/lookup/) also has useful information 
 
 ## Maintainers
 
-* Pablo Mendes [@pablomendes](https://github.com/pablomendes)
-* Matt Haynes [@matth](https://github.com/matth)
+* Kunal Jha [@Kunal-Jha](https://github.com/Kunal-Jha)
+* Sandro Coelho [@sandroacoelho](https://github.com/sandroacoelho)
+* Pablo Mendes [@pablomendes](https://github.com/pablomendes) (less active)
+* Matt Haynes [@matth](https://github.com/matth) (less active)
