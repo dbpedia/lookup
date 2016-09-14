@@ -21,4 +21,4 @@ If you have any problems with or questions about this image, please contact us t
 
 First of all, thank you for helping! :) .
 
-Please see [DBpedia Contribute Guide](https://github.com/dbpedia-spotlight/dbpedia-spotlight/wiki/Contributing) for details on how to contribute
+Please see [DBpedia Contribute Guide](https://github.com/dbpedia/lookup/wiki/Contributing) for details on how to contribute
