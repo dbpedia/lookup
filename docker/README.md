@@ -6,6 +6,11 @@
 * English    - ```docker run -p 1111:1111 -it dbpedia/lookup java -jar /opt/lookup/dbpedia-lookup-3.1-jar-with-dependencies.jar  /opt/lookup/2015-04/```
 
 
+And then try 
+
+```
+http://localhost:1111/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
+```
 
 ## Supported Docker versions
 This image is officially supported on Docker version 1.9.1.
