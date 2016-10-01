@@ -153,7 +153,7 @@ object Indexer extends Logging {
     }
 
     private def getDataInput(fileName: String, inputStream: InputStream, redirectsFile: File) = {
-        if (fileName.contains(".nt") || fileName.contains(".nq")) {
+        if (fileName.contains(".nt") || fileName.contains(".nq")|| fileName.contains(".ttl")) {
             logger.debug("using DBpediaNTriplesInputFormat")
             new DBpediaNTriplesInputFormat(inputStream, getRedirectUris(redirectsFile))
         }
