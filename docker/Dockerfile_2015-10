@@ -5,7 +5,7 @@ MAINTAINER  DBpedia Team <dbpedia-developers@lists.sourceforge.net>
 RUN apt-get update && apt-get install -y \
     curl
 
-ENV INDEX_URL www.dropbox.com/s/07wsjvze470iyhb/
+ENV INDEX_URL www.dropbox.com/s/l0o1euptpwgw4sg
 ENV INDEX_FILENAME 2015-10.tar.gz
 
 ENV LOOKUP_JAR dbpedia-lookup-3.1-jar-with-dependencies.jar
