@@ -61,10 +61,8 @@ You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2j
     
 #### Available versions: 
     
-* current - from Latest DBpedia Dump
+* current - from Latest DBpedia Dump (2015-10)
 
-Archive: 2015-04, 3.9 and 3.8 
-    
     
 #### Available languages (i18n working in progress): 
     
@@ -86,22 +84,31 @@ To re-build the index you will require
 
 
 ### Get the following DBpedia datasets
-from http://downloads.dbpedia.org/2015-04/core-i18n/en/
+from http://downloads.dbpedia.org/2015-10/core-i18n/en/
 
-* redirects\_en.nt
-* short\_abstracts\_en.nt
-* instance\_types\_en.nt
-* article\_categories\_en.nt
+* redirects\_en.nt (or .ttl)
+* short\_abstracts\_en.nt (or .ttl)
+* instance\_types\_en.nt (or .ttl)
+* article\_categories\_en.nt (or .ttl)
+
+from http://downloads.dbpedia.org/2015-10/core
+
+* instance_types_en.ttl
+* instance_types_sdtyped_dbo_en.ttl
+* instance_types_transitive_en.ttl
 
 ### Concatenate all data and sort by URI
 
 This is necessary because indexing in sorted order is significantly faster.
 
-      cat instance_types_en.nt  \
-          short_abstracts_en.nt \
-          article_categories_en.nt | sort >all_dbpedia_data.nt
+      cat instance_types_en.nt (or .ttl)  \
+          short_abstracts_en.nt (or .ttl) \
+          article_categories_en.nt (or .ttl) \
+          instance_types_en.ttl  \
+          instance_types_sdtyped_dbo_en.ttl \
+          instance_types_transitive_en.ttl | sort >all_dbpedia_data.nt (or .ttl)
 
-### Get the dataset redirects\_en.nt
+### Get the dataset redirects\_en.nt (or .ttl)
 
 Redirects are not indexed, but they are excluded as targets of lookup.
 
@@ -111,11 +118,11 @@ The indexer has to be run twice:
 
 1. with the DBpedia data 
 
-        ./run Indexer lookup_index_dir redirects_en.nt all_dbpedia_data.nt
+        ./run Indexer lookup_index_dir redirects_en.nt (or .ttl) all_dbpedia_data.nt (or .ttl)
 
 2. with the wikistatsextractor data
 
-        ./run Indexer lookup_index_dir redirects_en.nt pairCounts
+        ./run Indexer lookup_index_dir redirects_en.nt (or .ttl) pairCounts
 
 ## Support and feedback
 
@@ -128,4 +135,5 @@ The [DBpedia wiki](http://wiki.dbpedia.org/lookup/) also has useful information 
 * Kunal Jha [@Kunal-Jha](https://github.com/Kunal-Jha)
 * Sandro Coelho [@sandroacoelho](https://github.com/sandroacoelho)
 * Pablo Mendes [@pablomendes](https://github.com/pablomendes) (less active)
+* Max Jakob [@maxjakob](https://github.com/maxjakob) (less active)
 * Matt Haynes [@matth](https://github.com/matth) (less active)
