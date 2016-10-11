@@ -12,6 +12,19 @@ And then try
 http://localhost:1111/api/search/PrefixSearch?QueryClass=&MaxHits=5&QueryString=berl
 ```
 
+If you are using Docker Compose you can do the same with this minimal Compose file:
+
+```yml
+version: '2'
+services:
+  lookup:
+    container_name: lookup
+    image: dbpedia/lookup
+    ports:
+     - "1111:1111"
+    command: java -jar /opt/lookup/dbpedia-lookup-3.1-jar-with-dependencies.jar /opt/lookup/2015-10/
+```
+
 ## Supported Docker versions
 This image is officially supported on Docker version 1.9.1.
 
