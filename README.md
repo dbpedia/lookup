@@ -46,7 +46,7 @@ By default all data is returned as XML, the service also retuns JSON to any requ
 
 ### Download and configure the index
 
-You can get our indexes from [Dropbox](https://www.dropbox.com/sh/x338n4le2svy2jb/AAAY8_DTZj-Y7Mku29oVhiDla?dl=0)
+You can get our indexes from [HERE](http://downloads.dbpedia-spotlight.org/dbpedia_lookup/)
 
 ### Run the server
 
