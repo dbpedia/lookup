@@ -2,7 +2,7 @@
 
 readonly DBPEDIA_VERSION=$1
 readonly LANG_i18n=$2
-readonly DBPEDIA_DOWNLOADS="http://downloads.dbpedia.org"/$DBPEDIA_VERSION
+readonly DBPEDIA_DOWNLOADS="http://downloads.dbpedia.org"/$DBPEDIA_VERSION/core-i18n
 readonly DBPEDIA_ROOT=~/lookup
 readonly DBPEDIA_DATA=$DBPEDIA_ROOT/dbpedia_data/$DBPEDIA_VERSION
 readonly DBPEDIA_INDEX=dbpedia-lookup-index/$LANG_i18n/$DBPEDIA_VERSION
@@ -66,12 +66,12 @@ create_dir $DBPEDIA_ROOT/$DBPEDIA_INDEX
 
 for i in ${ALL_FILES[@]}
 do
- download_file $DBPEDIA_DOWNLOADS/$LANG_i18n ${i}_$LANG_i18n.nt.bz2 $DBPEDIA_DATA/$LANG_i18n    
+ download_file $DBPEDIA_DOWNLOADS/$LANG_i18n ${i}_$LANG_i18n.ttl.bz2 $DBPEDIA_DATA/$LANG_i18n    
 done
 
 for i in ${ALL_FILES[@]}
 do
-  bunzip2 -fk $DBPEDIA_DATA/$LANG_i18n/${i}_$LANG_i18n.nt.bz2 >  $DBPEDIA_DATA/$LANG_i18n/${i}_$LANG_i18n.nt
+  bunzip2 -dc  $DBPEDIA_DATA/$LANG_i18n/${i}_$LANG_i18n.ttl.bz2 >  $DBPEDIA_DATA/$LANG_i18n/${i}_$LANG_i18n.nt
 done
 
 cat $DBPEDIA_DATA/$LANG_i18n/short_abstracts_$LANG_i18n.nt $DBPEDIA_DATA/$LANG_i18n/instance_types_$LANG_i18n.nt $DBPEDIA_DATA/$LANG_i18n/article_categories_$LANG_i18n.nt > $DBPEDIA_DATA/$LANG_i18n/all_dbpedia_data.nt
