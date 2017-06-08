@@ -9,7 +9,7 @@ ENV INDEX_URL downloads.dbpedia-spotlight.org/dbpedia_lookup/models
 ENV INDEX_FILENAME 2015-10.tar.gz
 
 ENV LOOKUP_JAR dbpedia-lookup-3.1-jar-with-dependencies.jar
-ENV LOOKUP_URL downloads.dbpedia-spotlight.org/dbpedia_lookup/version/
+ENV LOOKUP_URL downloads.dbpedia-spotlight.org/dbpedia_lookup/
 
 RUN mkdir -p /opt/lookup && \
     cd /opt/lookup && \
