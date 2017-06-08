@@ -3,7 +3,7 @@
 
 ## How to run
 
-* English    - ```docker run -p 1111:1111 -it dbpedia/lookup java -jar /opt/lookup/dbpedia-lookup-3.1-jar-with-dependencies.jar /opt/lookup/2015-10/``
+* English    - ``docker run -p 1111:1111 -it dbpedia/lookup java -jar /opt/lookup/dbpedia-lookup-3.1-jar-with-dependencies.jar /opt/lookup/2015-10/``
 
 
 And then try 
