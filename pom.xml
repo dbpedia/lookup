@@ -45,7 +45,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.scala.plugin.version>3.2.2</maven.scala.plugin.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
-        <scala.compiler.version.revision>2.11.7</scala.compiler.version.revision>
+        <scala.compiler.version.revision>2.13.2</scala.compiler.version.revision>
         <scala.compiler.version>2.11</scala.compiler.version>
         <scala.test.version>2.2.6</scala.test.version>
         <maven.scala.test.plugin.version>1.0</maven.scala.test.plugin.version>
