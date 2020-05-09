@@ -50,7 +50,7 @@
         <scala.test.version>2.2.6</scala.test.version>
         <maven.scala.test.plugin.version>1.0</maven.scala.test.plugin.version>
         <dbpedia.extraction.version>4.0</dbpedia.extraction.version>
-        <lucene.core.version>3.6.2</lucene.core.version>
+        <lucene.core.version>7.1.0</lucene.core.version>
         <jersey.server.version>1.19.1</jersey.server.version>
         <commons.compress.version>1.0</commons.compress.version>
         <lift.json.version>2.6.2</lift.json.version>
