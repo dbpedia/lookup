@@ -52,7 +52,7 @@
         <dbpedia.extraction.version>4.0</dbpedia.extraction.version>
         <lucene.core.version>3.6.2</lucene.core.version>
         <jersey.server.version>1.19.1</jersey.server.version>
-        <commons.compress.version>1.0</commons.compress.version>
+        <commons.compress.version>1.19</commons.compress.version>
         <lift.json.version>2.6.2</lift.json.version>
         <logback.classic.version>1.0.9</logback.classic.version>
         <yars.nxparser.version>1.2.3</yars.nxparser.version>
