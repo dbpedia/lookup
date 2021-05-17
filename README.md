@@ -1,11 +1,13 @@
+# IMPORTANT NOTE:
+There is a newer and DBpedia Databus compatible version of the DBpedia Lookup here: https://github.com/dbpedia/dbpedia-lookup. The discussion concerning the transition to the new service can be found here: https://forum.dbpedia.org/t/new-dbpedia-lookup-application/607
+
+
 # DBpedia Lookup
 
 [![Build Status](https://travis-ci.org/dbpedia/lookup.svg?branch=master)](https://travis-ci.org/dbpedia/lookup)
 
 DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords. Related means that either the label of a resource matches, or an anchor text that was frequently used in Wikipedia to refer to a specific resource matches (for example the resource http://dbpedia.org/resource/United_States can be looked up by the string "USA"). The results are ranked by the number of inlinks pointing from other Wikipedia pages at a result page.
 
-# IMPORTANT NOTE:
-There is a newer and DBpedia Databus compatible version of the DBpedia Lookup here: https://github.com/dbpedia/dbpedia-lookup. The discussion concerning the transition to the new service can be found here: https://forum.dbpedia.org/t/new-dbpedia-lookup-application/607
 
 ## Web APIs
 
